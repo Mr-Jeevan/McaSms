@@ -1,0 +1,209 @@
+import { useState, useEffect } from 'react';
+
+import "./index.css"
+
+import { exportToExcel } from '../utils/ExportToExcel';
+import { exportFilteredToExcel } from '../utils/ExportToExcel';
+
+
+const McaTwo = () => {
+    const [students, setStudents] = useState([]);
+    const [selectedColumns, setSelectedColumns] = useState(['ID', 'Name', 'Age']); // default selected
+
+    const [allColumns, setAllColumns] = useState([
+        'ID',
+        'Name',
+        'Age',
+        'Hostel / Day Scholar',
+        'dob',
+        'gender',
+        'Student Contact',
+        'Blood Group',
+        'Bus No.',
+        '10%',
+        '12%',
+        'CGPA in UG',
+        'CGPA in PG',
+        'CURRENT ARREAR',
+        'Fathers Name',
+        'Fathers Ph.',
+        'Fathers Occupation',
+        'Mothers Name',
+        'Mothers Ph.',
+        'Mothers Occupation',
+        'Guardian Name',
+        'Relationship',
+        'Guardian occupation',
+        'Guardian Phone No.',
+        'Door No. & Street',
+        'Town/ Village',
+        'Post',
+        'Taluk',
+        'District',
+        'State',
+        'Pincode',
+        'Country',
+        'Email Id (College)',
+        'Email Id (Personal)',
+        'Licence Number',
+        'Passport Number',
+        'Aadhaar Number',
+        'PAN'
+    ]);
+
+    const [newColumn, setNewColumn] = useState('');
+
+
+    const handleCheckboxChange = (col) => {
+        setSelectedColumns((prev) =>
+            prev.includes(col)
+                ? prev.filter((c) => c !== col)
+                : [...prev, col]
+        );
+    };
+
+
+    useEffect(() => {
+        // Mock data or fetch from API
+        const fetchStudents = async () => {
+            try {
+                const response = await fetch('/students.json');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok' + response.statusText)
+                } else {
+
+                    const data = await response.json();
+                    setStudents(data);
+                }
+
+            } catch (error) {
+                console.error('Error fetching students:', error)
+            }
+        };
+        fetchStudents();
+    }, []);
+
+    return (
+        <>
+            <div className='container '>
+                <div>
+                    <h1>Student Management System</h1>
+                </div>
+
+                <div className="accordion accordion-flush shadow-sm border rounded " id="accordionFlushExample">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button btn collapsed bg-info text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <div className='text-center'>ACTIONS</div>
+                            </button>
+                        </h2>
+                        {/* accordion */}
+                        <div id="flush-collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div className="accordion-body">
+                                <div className="d-flex mb-3">
+                                    <input
+                                        type="text"
+                                        className="form-control me-2"
+                                        placeholder="Enter new column name"
+                                        value={newColumn}
+                                        onChange={(e) => setNewColumn(e.target.value)}
+                                    />
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                            if (newColumn && !allColumns.includes(newColumn)) {
+                                                setAllColumns([...allColumns, newColumn]);
+                                                setStudents(prev =>
+                                                    prev.map(student => ({
+                                                        ...student,
+                                                        [newColumn]: "" // default value for the new column
+                                                    }))
+                                                );
+                                                setNewColumn('');
+                                            }
+                                        }}
+
+                                    >
+                                        Add Column
+                                    </button>
+                                </div>
+                                <hr />
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                    {/* export specifics */}
+                                    <button className="btn btn-primary mb-3" onClick={() => exportFilteredToExcel(students, 'Mca_2_filetered.xlsx', selectedColumns)}>
+                                        Export Selected
+                                    </button>
+                                    {/* export all */}
+                                    <button className='btn btn-warning  mb-3' onClick={() => exportToExcel(students, 'Mca_2.xlsx')}>
+                                        Export all
+                                    </button>
+                                </div>
+                                {/* selection table */}
+                                <div className="table-responsive">
+                                    <table className="table table-bordered table-striped">
+                                        <tbody>
+                                            {Array.from({ length: Math.ceil(allColumns.length / 4) }, (_, rowIndex) => (
+                                                <tr key={rowIndex}>
+                                                    {Array.from({ length: 4 }, (_, colIndex) => {
+                                                        const index = colIndex * Math.ceil(allColumns.length / 4) + rowIndex;
+                                                        const col = allColumns[index];
+                                                        return col ? (
+                                                            <td key={col} className="px-2">
+                                                                <label className="form-check form-check-label">
+                                                                    <input
+                                                                        className="form-check-input"
+                                                                        type="checkbox"
+                                                                        checked={selectedColumns.includes(col)}
+                                                                        onChange={() => handleCheckboxChange(col)}
+                                                                    />
+                                                                    {col}
+                                                                </label>
+                                                            </td>
+                                                        ) : (
+                                                            <td key={colIndex}></td>
+                                                        );
+                                                    })}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* data table */}
+                <div className="overflow-auto table-responsive" >
+                    <table className="table table-striped table-bordered mt-3" >
+                        <thead className="table-primary">
+                            <tr>
+                                {allColumns.map((col, idx) => (
+                                    <th key={col} className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}>
+                                        {col}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {students.map((student, i) => (
+                                <tr key={student.id}>
+
+                                    {allColumns.map((col, idx) => (
+                                        <td key={col} className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}>
+                                            {student[col] ?? ""}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div >
+        </>
+    );
+};
+
+export default McaTwo;

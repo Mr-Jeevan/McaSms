@@ -1,0 +1,10 @@
+link:focus {
+    background-color: #1d2124;
+}
+
+.active-link {
+    background-color: #ffffff;
+    /* Dark background color */
+    color: #ff0000;
+    /* Light text color for contrast */
+}
