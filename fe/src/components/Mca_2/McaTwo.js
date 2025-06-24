@@ -16,6 +16,8 @@ const McaTwo = () => {
 
     const navigate = useNavigate();
 
+    const [searchTerm, setSearchTerm] = useState('');
+
     const [pressTimer, setPressTimer] = useState(null);
     const [showEditForId, setShowEditForId] = useState(null);
 
@@ -27,6 +29,13 @@ const McaTwo = () => {
     const [newColumn, setNewColumn] = useState('');
 
 
+    // Filtered view (temporary search result)
+    const displayedStudents = students.filter(student =>
+        allColumns.some(col =>
+            String(student[col] ?? '').toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    );
+
 
     const handleMouseDown = (id) => {
 
@@ -35,12 +44,9 @@ const McaTwo = () => {
         }, 300);
         setPressTimer(timer);
     };
-
     const cancelPress = () => {
         clearTimeout(pressTimer);
     };
-
-
     const handleCheckboxChange = (col) => {
         setSelectedColumns((prev) =>
             prev.includes(col)
@@ -50,8 +56,9 @@ const McaTwo = () => {
     };
 
 
+
+    // fetch from API
     useEffect(() => {
-        // Mock data or fetch from API
         const fetchStudents = async () => {
             try {
                 const response = await fetch('/students.json');
@@ -61,7 +68,7 @@ const McaTwo = () => {
 
                     const data = await response.json();
                     setStudents(data);
-                    // console.log('Fetched students:', data[0].id);
+                    // console.log('Fetched students:', data[0].sno);
                 }
 
             } catch (error) {
@@ -117,7 +124,7 @@ const McaTwo = () => {
                                 </div>
                                 <hr />
 
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                <div className="d-grid gap-2 d-md-flex justify-content-md-start">
                                     {/* export specifics */}
                                     <button className="btn btn-primary mb-3" onClick={() => exportFilteredToExcel(students, 'Mca_2_filetered.xlsx', selectedColumns)}>
                                         Export Selected
@@ -161,6 +168,33 @@ const McaTwo = () => {
                         </div>
                     </div>
                 </div>
+                {/* Search */}
+                <div className="my-3 d-flex justify-content-between">
+                    {/* search */}
+                    <div>
+                        <input type="text" className="form-control mt-3" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                    </div>
+                    <div>
+                        {/* add Students */}
+                        <button
+                            className="btn btn-success my-3"
+                            onClick={() => {
+                                const newId = students.length ? Math.max(...students.map(s => s.ID)) + 1 : 1;
+                                const newStudent = { ID: newId };
+
+                                allColumns.forEach(col => {
+                                    if (col !== 'ID') newStudent[col] = '';
+                                });
+
+                                setStudents([...students, newStudent]);
+                            }}
+                        >
+                            ➕ Add Student
+                        </button>
+
+                    </div>
+
+                </div>
 
                 {/* data table */}
                 <div className="overflow-auto table-responsive" >
@@ -175,9 +209,10 @@ const McaTwo = () => {
                             </tr>
                         </thead>
 
+
                         <tbody>
-                            {students.map((student, i) => (
-                                <tr key={student.id}>
+                            {displayedStudents.map((student, i) => (
+                                <tr key={student.sno}>
                                     {allColumns.map((col, idx) => (
                                         <td
                                             key={col}
