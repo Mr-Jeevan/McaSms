@@ -56,13 +56,7 @@ const Home = () => {
 
             </section>
             <br />
-            <section>
-                <div className="container bg-primary rounded-3 shadow-lg p-3 mt-5 mb-5  ">
-                    <Link to="/AddStudents">
-                        <input className="btn btn-light form-control fw-bold fs-4 text-uppercase" type="button" value="ADD STUDENTS" />
-                    </Link>
-                </div>
-            </section>
+
 
 
         </>
