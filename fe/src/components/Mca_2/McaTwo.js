@@ -22,7 +22,7 @@ const McaTwo = () => {
     const [showEditForId, setShowEditForId] = useState(null);
 
     const [students, setStudents] = useState([]);
-    const [selectedColumns, setSelectedColumns] = useState(['id', 'Name', 'Age']); // default selected
+    const [selectedColumns, setSelectedColumns] = useState(['id', 'Student-Name', 'Age']); // default selected
 
     const [allColumns, setAllColumns] = useState(McaTwoColumns);
 
@@ -68,7 +68,7 @@ const McaTwo = () => {
 
                     const data = await response.json();
                     setStudents(data);
-                    // console.log('Fetched students:', data[0].sno);
+                    console.log('Fetched students:', data[0]);
                 }
 
             } catch (error) {
@@ -217,17 +217,17 @@ const McaTwo = () => {
                                         <td
                                             key={col}
                                             className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
-                                            onMouseDown={idx === 0 ? () => handleMouseDown(student.id) : undefined}
+                                            onMouseDown={idx === 0 ? () => handleMouseDown(student.sno) : undefined}
                                             onMouseUp={idx === 0 ? cancelPress : undefined}
                                             onMouseLeave={idx === 0 ? cancelPress : undefined}
-                                            onTouchStart={idx === 0 ? () => handleMouseDown(student.id) : undefined}
+                                            onTouchStart={idx === 0 ? () => handleMouseDown(student.sno) : undefined}
                                             onTouchEnd={idx === 0 ? cancelPress : undefined}
                                         >
                                             {idx === 0 ? i + 1 : student[col] ?? ""}
-                                            {idx === 0 && showEditForId === student.id && (
+                                            {idx === 0 && showEditForId === student.sno && (
                                                 <button
                                                     onClick={() => {
-                                                        alert(`Edit student ${student.Name} ${student.id || 'No ID found'}`);
+                                                        alert(`Edit student ${student.Name} ${student.sno || 'No ID found'}`);
                                                         navigate(`/Edit/${student.id}`)
                                                         setShowEditForId(null); // reset after click
                                                     }}

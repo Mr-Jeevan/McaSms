@@ -1,8 +1,8 @@
 export const McaTwoColumns = [
-    "sno",
+    "ID",
     "Application No.",
     "Register Number",
-    "Student Name",
+    "Name",
     "Student Contact No.",
     "Date of Birth",
     "Date of Joining (from 12/07/2024)",
