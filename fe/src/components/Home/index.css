@@ -5,6 +5,12 @@
     box-sizing: border-box;
 }
 
+body {
+    background: url("../../assets/imgs/mca_banner.png") no-repeat center center;
+    background-size: cover;
+
+}
+
 /* From Uiverse.io by Pradeepsaranbishnoi */
 .wallet {
     --bg-color: #9e00cf;
@@ -13,6 +19,13 @@
     --box-shadow-color: rgba(206, 178, 252, 0.48);
 }
 
+.banner {
+    background-color: #ffffff33;
+    backdrop-filter: blur(4px) saturate(180%);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
 
 .card {
     width: 200px;

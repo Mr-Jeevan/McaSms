@@ -1,6 +1,8 @@
-/* .navbar {
-    color: white;
-    padding: 3rem 2rem;
-    text-align: center;
-    clip-path: path("M 0 0 H 100% V 80 Q 50% 140 100% 80 V 0 Z");
-} */
+.navbar {
+    background: #ffffff31;
+    backdrop-filter: blur(16px) saturate(180%);
+    /* background-color: rgba(255, 255, 255, 0.25); */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}

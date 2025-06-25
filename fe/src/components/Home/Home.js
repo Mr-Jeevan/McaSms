@@ -1,14 +1,16 @@
 // import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
-import "./index.css"
 import wall_e_modal from "../../assets/imgs/wall_e_modal.png";
+
+import "./index.css"
+
 const Home = () => {
 
     return (
         <>
             <section className="pt-5">
-                <div className="container bg-primary rounded-3 shadow-lg p-3 mt-5 mb-5">
+                <div className="banner container rounded-3 shadow-lg p-3 mt-5 mb-5">
                     {/* heading */}
                     <div className="heading">
                         <h1 className='text-center'>MCA STUDENT DETAILS
