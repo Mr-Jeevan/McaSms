@@ -9,24 +9,29 @@ import { McaTwoColumns } from '../config/McaTwoColumns';
 
 import { exportToExcel } from '../utils/ExportToExcel';
 import { exportFilteredToExcel } from '../utils/ExportToExcel';
+import StudentActionModal from '../EditDeleteModal/StudentActionModal'
 
 
 
 const McaTwo = () => {
 
+    // Navigation and logic
     const navigate = useNavigate();
 
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const [pressTimer, setPressTimer] = useState(null);
-    const [showEditForId, setShowEditForId] = useState(null);
-
+    // Student data
     const [students, setStudents] = useState([]);
-    const [selectedColumns, setSelectedColumns] = useState(['id', 'Student-Name', 'Age']); // default selected
+    const [selectedStudent, setSelectedStudent] = useState(null);
 
+    // Table configuration
     const [allColumns, setAllColumns] = useState(McaTwoColumns);
 
+    // UI interaction
+    const [searchTerm, setSearchTerm] = useState('');
     const [newColumn, setNewColumn] = useState('');
+    const [selectedColumns, setSelectedColumns] = useState(['id', 'Student-Name', 'Age']);
+
+    // UX behavior
+    const [pressTimer, setPressTimer] = useState(null);
 
 
     // Filtered view (temporary search result)
@@ -37,10 +42,13 @@ const McaTwo = () => {
     );
 
 
-    const handleMouseDown = (id) => {
+
+    // long press edit btn logics
+
+    const handleMouseDown = (student) => {
 
         const timer = setTimeout(() => {
-            setShowEditForId(id);
+            setSelectedStudent(student);
         }, 300);
         setPressTimer(timer);
     };
@@ -126,11 +134,11 @@ const McaTwo = () => {
 
                                 <div className="d-grid gap-2 d-md-flex justify-content-md-start">
                                     {/* export specifics */}
-                                    <button className="btn btn-primary mb-3" onClick={() => exportFilteredToExcel(students, 'Mca_2_filetered.xlsx', selectedColumns)}>
+                                    <button className="btn btn-primary mb-3" onClick={() => exportFilteredToExcel(displayedStudents, 'Mca_2_filetered.xlsx', selectedColumns)}>
                                         Export Selected
                                     </button>
                                     {/* export all */}
-                                    <button className='btn btn-warning  mb-3' onClick={() => exportToExcel(students, 'Mca_2.xlsx')}>
+                                    <button className='btn btn-warning  mb-3' onClick={() => exportToExcel(displayedStudents, 'Mca_2.xlsx')}>
                                         Export all
                                     </button>
                                 </div>
@@ -217,25 +225,16 @@ const McaTwo = () => {
                                         <td
                                             key={col}
                                             className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
-                                            onMouseDown={idx === 0 ? () => handleMouseDown(student.sno) : undefined}
+                                            // onClick={idx === 0 ? () => setSelectedStudent(student) : undefined}
+
+                                            onMouseDown={idx === 0 ? () => handleMouseDown(student) : undefined}
                                             onMouseUp={idx === 0 ? cancelPress : undefined}
                                             onMouseLeave={idx === 0 ? cancelPress : undefined}
-                                            onTouchStart={idx === 0 ? () => handleMouseDown(student.sno) : undefined}
+                                            onTouchStart={idx === 0 ? () => handleMouseDown(student) : undefined}
                                             onTouchEnd={idx === 0 ? cancelPress : undefined}
                                         >
                                             {idx === 0 ? i + 1 : student[col] ?? ""}
-                                            {idx === 0 && showEditForId === student.sno && (
-                                                <button
-                                                    onClick={() => {
-                                                        alert(`Edit student ${student.Name} ${student.sno || 'No ID found'}`);
-                                                        navigate(`/Edit/${student.id}`)
-                                                        setShowEditForId(null); // reset after click
-                                                    }}
-                                                    className="btn btn-sm btn-info ms-2"
-                                                >
-                                                    Edit
-                                                </button>
-                                            )}
+
                                         </td>
                                     ))}
                                 </tr>
@@ -244,6 +243,19 @@ const McaTwo = () => {
                     </table>
                 </div>
             </div >
+            <StudentActionModal
+                student={selectedStudent}
+                onClose={() => setSelectedStudent(null)}
+                onEdit={() => {
+                    navigate(`/Edit/${selectedStudent.id}`);
+                    setSelectedStudent(null);
+                }}
+                onDelete={() => {
+                    setStudents(prev => prev.filter(s => s.sno !== selectedStudent.sno));
+                    setSelectedStudent(null);
+                }}
+            />
+
         </>
     );
 };
