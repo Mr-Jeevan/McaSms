@@ -136,7 +136,7 @@ body {
     height: 0px;
     border-radius: 50%;
     background-color: #f5f5f5;
-    box-shadow: 8px 0px 105px 105px rgba(176, 184, 255, 1);
+    box-shadow: 8px 0px 105px 105px rgba(198, 124, 212);
     animation: hero_diamond 2s ease-in-out infinite;
 }
 
