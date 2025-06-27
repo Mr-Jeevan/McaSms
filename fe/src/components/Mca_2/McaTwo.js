@@ -86,6 +86,14 @@ const McaTwo = () => {
         fetchStudents();
     }, []);
 
+
+    // delete student logic
+    const handleDeleteStudent = (student) => {
+        setStudents(prev => prev.filter(s => s.sno !== student.sno));
+        setSelectedStudent(null); // close modal after delete
+    };
+
+
     return (
         <>
             <div className='container mt-5 '>
@@ -250,10 +258,8 @@ const McaTwo = () => {
                     navigate(`/Edit/${selectedStudent.id}`);
                     setSelectedStudent(null);
                 }}
-                onDelete={() => {
-                    setStudents(prev => prev.filter(s => s.sno !== selectedStudent.sno));
-                    setSelectedStudent(null);
-                }}
+                onDelete={() => handleDeleteStudent(selectedStudent)}
+
             />
 
         </>
