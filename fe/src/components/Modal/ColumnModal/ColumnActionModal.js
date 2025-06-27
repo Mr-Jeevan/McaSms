@@ -1,0 +1,34 @@
+import React from "react";
+import "./index.css"; // ensure styles are applied
+
+const ColumnActionModal = ({
+  column,
+  onClose,
+  onRename,
+  onDelete
+}) => {
+  if (!column) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-dialog glass-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Column: {column}</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
+          </div>
+          <div className="modal-body d-flex flex-column gap-3">
+            <button className="btn btn-primary" onClick={onRename}>
+              ✏️ Rename
+            </button>
+            <button className="btn btn-danger" onClick={onDelete}>
+              🗑️ Delete Column
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ColumnActionModal;
