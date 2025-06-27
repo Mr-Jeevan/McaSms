@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 import "./index.css"
+
+
+import StudentActionModal from '../Modal/StudentModal/StudentActionModal'
+import ColumnActionModal from "../Modal/ColumnModal/ColumnActionModal.js";
 
 import { McaTwoColumns } from '../config/McaTwoColumns';
 
 
 import { exportToExcel } from '../utils/ExportToExcel';
 import { exportFilteredToExcel } from '../utils/ExportToExcel';
-import StudentActionModal from '../EditDeleteModal/StudentActionModal'
+
 
 
 
@@ -29,6 +32,9 @@ const McaTwo = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [newColumn, setNewColumn] = useState('');
     const [selectedColumns, setSelectedColumns] = useState(['id', 'Student-Name', 'Age']);
+    const [selectedColumn, setSelectedColumn] = useState(null);
+    const [colPressTimer, setColPressTimer] = useState(null);
+
 
     // UX behavior
     const [pressTimer, setPressTimer] = useState(null);
@@ -85,6 +91,14 @@ const McaTwo = () => {
         };
         fetchStudents();
     }, []);
+
+
+    // delete student logic
+    const handleDeleteStudent = (student) => {
+        setStudents(prev => prev.filter(s => s.sno !== student.sno));
+        setSelectedStudent(null); // close modal after delete
+    };
+
 
     return (
         <>
@@ -210,9 +224,27 @@ const McaTwo = () => {
                         <thead className="table-primary">
                             <tr>
                                 {allColumns.map((col, idx) => (
-                                    <th key={col} className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}>
+                                    // <th key={col} className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}>
+                                    //     {col}
+                                    // </th>
+                                    <th
+                                        key={col}
+                                        className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
+                                        onMouseDown={() => {
+                                            const timer = setTimeout(() => setSelectedColumn(col), 500);
+                                            setColPressTimer(timer);
+                                        }}
+                                        onMouseUp={() => clearTimeout(colPressTimer)}
+                                        onMouseLeave={() => clearTimeout(colPressTimer)}
+                                        onTouchStart={() => {
+                                            const timer = setTimeout(() => setSelectedColumn(col), 500);
+                                            setColPressTimer(timer);
+                                        }}
+                                        onTouchEnd={() => clearTimeout(colPressTimer)}
+                                    >
                                         {col}
                                     </th>
+
                                 ))}
                             </tr>
                         </thead>
@@ -250,9 +282,38 @@ const McaTwo = () => {
                     navigate(`/Edit/${selectedStudent.id}`);
                     setSelectedStudent(null);
                 }}
+                onDelete={() => handleDeleteStudent(selectedStudent)}
+
+            />
+            <ColumnActionModal
+                column={selectedColumn}
+                onClose={() => setSelectedColumn(null)}
+                onRename={() => {
+                    const newName = prompt("Enter new column name", selectedColumn);
+                    if (newName && newName !== selectedColumn) {
+                        setAllColumns(cols => cols.map(c => (c === selectedColumn ? newName : c)));
+                        setStudents(prev =>
+                            prev.map(student => {
+                                const updated = { ...student };
+                                updated[newName] = updated[selectedColumn];
+                                delete updated[selectedColumn];
+                                return updated;
+                            })
+                        );
+                    }
+                    setSelectedColumn(null);
+                }}
                 onDelete={() => {
-                    setStudents(prev => prev.filter(s => s.sno !== selectedStudent.sno));
-                    setSelectedStudent(null);
+                    setAllColumns(cols => cols.filter(c => c !== selectedColumn));
+                    setSelectedColumns(cols => cols.filter(c => c !== selectedColumn));
+                    setStudents(prev =>
+                        prev.map(student => {
+                            const updated = { ...student };
+                            delete updated[selectedColumn];
+                            return updated;
+                        })
+                    );
+                    setSelectedColumn(null);
                 }}
             />
 
