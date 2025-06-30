@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { McaTwoColumns } from '../config/McaTwoColumns';
+import { McaTwoColumns } from '../../config/McaTwoColumns';
 
 const AddStudents = ({ onSubmit }) => {
     const [student, setStudent] = useState(

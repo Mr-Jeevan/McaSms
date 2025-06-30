@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import "./index.css"
 
 
-import StudentActionModal from '../Modal/StudentModal/StudentActionModal'
-import ColumnActionModal from "../Modal/ColumnModal/ColumnActionModal.js";
+import StudentActionModal from '../../components/Modal/StudentModal/StudentActionModal.js'
+import ColumnActionModal from "../../components/Modal/ColumnModal/ColumnActionModal.js";
 
-import { McaTwoColumns } from '../config/McaTwoColumns';
+import { McaTwoColumns } from '../../config/McaTwoColumns.js';
 
 
-import { exportToExcel } from '../utils/ExportToExcel';
-import { exportFilteredToExcel } from '../utils/ExportToExcel';
+import { exportToExcel } from '../../utils/ExportToExcel.js';
+import { exportFilteredToExcel } from '../../utils/ExportToExcel.js';
 
 
 
@@ -192,7 +192,6 @@ const McaTwo = () => {
                 </div>
                 {/* Search */}
                 <div className="my-3 d-flex justify-content-between">
-                    {/* search */}
                     <div>
                         <input type="text" className="form-control mt-3" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                     </div>
@@ -220,14 +219,14 @@ const McaTwo = () => {
 
                 {/* data table */}
                 <div className="overflow-auto table-responsive" >
-                    <table className="table table-striped table-bordered mt-3" >
-                        <thead className="table-primary">
+                    <table className="table table-striped table-bordered mt-3 table-light" >
+                        <thead className="head" style={{ backgroundColor: "#4CAF50", color: "white" }}>
                             <tr>
                                 {allColumns.map((col, idx) => (
                                     // <th key={col} className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}>
                                     //     {col}
                                     // </th>
-                                    <th
+                                    <th style={{ backgroundColor: "#", color: "" }}
                                         key={col}
                                         className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
                                         onMouseDown={() => {
@@ -248,8 +247,7 @@ const McaTwo = () => {
                                 ))}
                             </tr>
                         </thead>
-
-
+                        {/* TABLE BODY */}
                         <tbody>
                             {displayedStudents.map((student, i) => (
                                 <tr key={student.sno}>

@@ -4,13 +4,16 @@
 
 }
 
+thead .head{
+    background: #d4beff;
+}
+
 thead th {
+    background-color: #5500ff;
     position: sticky;
     top: -1px;
     /* z-index: 2; */
 }
-
-
 
 th.sticky-col,
 td.sticky-col {
