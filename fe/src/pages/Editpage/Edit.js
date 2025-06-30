@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { McaTwoColumns } from '../../components/config/McaTwoColumns';
+import { McaTwoColumns } from '../../config/McaTwoColumns';
 
 const Edit = () => {
     const { id } = useParams();

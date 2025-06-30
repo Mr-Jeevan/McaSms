@@ -7,12 +7,15 @@
 
 body {
 
-    background: url("../../assets/imgs/doodle_banner_3.0.png") no-repeat center center;
     background-color: #180825;
-    background-size: cover;
-
+    
 }
-
+.banner_bg{
+    background: url("../../assets/imgs/doodle_banner_3.0.png") no-repeat center center;
+    background-size: cover;
+    background-position: center bottom;
+    
+}
 /* From Uiverse.io by Pradeepsaranbishnoi */
 .wallet {
     --bg-color: #9e00cf;
