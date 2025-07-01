@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import "./header.css";
-function Header() {
+function Header({ setIsLoggedIn }) {
     const [iconChange, seticonChange] = useState(false);
+    const navigate = useNavigate()
+
+
+
     const iconChangeForSlider = () => {
         if (iconChange) {
             seticonChange(false);
@@ -27,6 +32,12 @@ function Header() {
             // });
         }
     }
+    const logout = () => {
+        localStorage.removeItem("isLoggedIn");
+        setIsLoggedIn(false);
+        navigate('/');
+    };
+
     return (
         <>
             <nav className="navbar p-1 navbar-expand-lg border-bottom fixed-top mb-5  ">
@@ -60,17 +71,25 @@ function Header() {
                     <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li className="nav-item active">
-                                <Link className="nav-link" to="/">Home</Link>
+                                <Link className="nav-link" to="/home">Home</Link>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button
+                                    className="nav-link dropdown-toggle btn btn-link"
+                                    id="navbarDropdown"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
                                     Class
-                                </a>
+                                </button>
+
                                 <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <Link className="dropdown-item" to="/LongPress">MCA I</Link>
                                     <Link className="dropdown-item" to="/McaTwo">MCA II</Link>
                                 </div>
                             </li>
+                            <button onClick={logout} className="btn btn-outline-secondary ms-2">Logout</button>
                         </ul>
                     </div>
 
