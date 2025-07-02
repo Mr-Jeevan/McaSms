@@ -1,0 +1,107 @@
+#landingpage {
+    .navbar .btn {
+        border: 2px solid #E411C7;
+        color: #9B7EBD;
+        transition: .2s ease-in-out;
+    }
+
+    .btn:hover {
+        background-color: #E411C7;
+        color: #fff;
+    }
+
+    .smooth-scroller {
+        width: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+        max-width: 1000px;
+        margin: auto;
+        background-color: #000;
+        /* optional backdrop */
+    }
+
+    .image-track {
+        display: flex;
+        will-change: transform;
+    }
+
+    .scroller-img {
+        width: 300px;
+        height: 180px;
+        margin-right: 20px;
+        object-fit: cover;
+        flex-shrink: 0;
+        border-radius: 8px;
+    }
+
+    .login_btn .btn {
+        background: #e61fc4;
+        letter-spacing: 8px;
+        -webkit-box-shadow: -0px 0px 100px 14px rgba(3, 240, 255, 1);
+        -moz-box-shadow: -0px 0px 100px 14px rgba(3, 240, 255, 1);
+        box-shadow: -0px 0px 100px 1px rgba(3, 240, 255, 1);
+    }
+
+
+    /* code  */
+    .code-container {
+        background-color: #282c34;
+        /* Dark background like in your image */
+        color: #abb2bf;
+        /* Light text color */
+        padding: 20px;
+        border-radius: 8px;
+        font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+        /* Monospace font for code */
+        margin: 20px;
+        max-width: 500px;
+        /* Adjust as needed */
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .code-container h2 {
+        color: #61dafb;
+        /* Example heading color */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .code-container pre {
+        background-color: #1e1e1e;
+        /* Slightly darker background for the code block */
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        /* Ensures horizontal scroll if code is too long */
+    }
+
+    .code-container code {
+        display: block;
+        /* Ensures it takes up full width inside pre */
+        white-space: pre;
+        /* Preserves whitespace and line breaks */
+    }
+
+    /* To mimic the colors in your image for specific words */
+    .code-container .keyword {
+        color: #c678dd;
+        /* Like 'while' */
+    }
+
+    .code-container .function-name {
+        color: #e06c75;
+        /* Like 'eat', 'sleep', 'repeat' */
+    }
+
+    .code-container .special-function {
+        color: #c711a7;
+        /* Like 'code' */
+    }
+
+    .code-container .another-special-function {
+        color: #61afef;
+        /* Like 'design' */
+    }
+}

@@ -16,3 +16,7 @@ emmet => {
   "editor.suggest.snippetsPreventQuickSuggestions": false,
   "editor.tabCompletion": "on"
 }
+
+
+banner
+navbar

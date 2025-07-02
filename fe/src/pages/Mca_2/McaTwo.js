@@ -102,6 +102,8 @@ const McaTwo = () => {
 
     return (
         <>
+        <section id='mcatwo'>
+
             <div className='container mt-5 '>
                 <div>
                     <h1>MCA II Management System</h1>
@@ -124,7 +126,7 @@ const McaTwo = () => {
                                         placeholder="Enter new column name"
                                         value={newColumn}
                                         onChange={(e) => setNewColumn(e.target.value)}
-                                    />
+                                        />
                                     <button
                                         className="btn btn-success"
                                         onClick={() => {
@@ -139,8 +141,8 @@ const McaTwo = () => {
                                                 setNewColumn('');
                                             }
                                         }}
-
-                                    >
+                                        
+                                        >
                                         Add Column
                                     </button>
                                 </div>
@@ -173,7 +175,7 @@ const McaTwo = () => {
                                                                         type="checkbox"
                                                                         checked={selectedColumns.includes(col)}
                                                                         onChange={() => handleCheckboxChange(col)}
-                                                                    />
+                                                                        />
                                                                     {col}
                                                                 </label>
                                                             </td>
@@ -202,14 +204,14 @@ const McaTwo = () => {
                             onClick={() => {
                                 const newId = students.length ? Math.max(...students.map(s => s.ID)) + 1 : 1;
                                 const newStudent = { ID: newId };
-
+                                
                                 allColumns.forEach(col => {
                                     if (col !== 'ID') newStudent[col] = '';
                                 });
-
+                                
                                 setStudents([...students, newStudent]);
                             }}
-                        >
+                            >
                             ➕ Add Student
                         </button>
 
@@ -227,7 +229,7 @@ const McaTwo = () => {
                                     //     {col}
                                     // </th>
                                     <th style={{ backgroundColor: "#", color: "" }}
-                                        key={col}
+                                    key={col}
                                         className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
                                         onMouseDown={() => {
                                             const timer = setTimeout(() => setSelectedColumn(col), 500);
@@ -240,11 +242,11 @@ const McaTwo = () => {
                                             setColPressTimer(timer);
                                         }}
                                         onTouchEnd={() => clearTimeout(colPressTimer)}
-                                    >
+                                        >
                                         {col}
                                     </th>
 
-                                ))}
+))}
                             </tr>
                         </thead>
                         {/* TABLE BODY */}
@@ -253,15 +255,15 @@ const McaTwo = () => {
                                 <tr key={student.sno}>
                                     {allColumns.map((col, idx) => (
                                         <td
-                                            key={col}
-                                            className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
-                                            // onClick={idx === 0 ? () => setSelectedStudent(student) : undefined}
-
-                                            onMouseDown={idx === 0 ? () => handleMouseDown(student) : undefined}
-                                            onMouseUp={idx === 0 ? cancelPress : undefined}
-                                            onMouseLeave={idx === 0 ? cancelPress : undefined}
-                                            onTouchStart={idx === 0 ? () => handleMouseDown(student) : undefined}
-                                            onTouchEnd={idx === 0 ? cancelPress : undefined}
+                                        key={col}
+                                        className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
+                                        // onClick={idx === 0 ? () => setSelectedStudent(student) : undefined}
+                                        
+                                        onMouseDown={idx === 0 ? () => handleMouseDown(student) : undefined}
+                                        onMouseUp={idx === 0 ? cancelPress : undefined}
+                                        onMouseLeave={idx === 0 ? cancelPress : undefined}
+                                        onTouchStart={idx === 0 ? () => handleMouseDown(student) : undefined}
+                                        onTouchEnd={idx === 0 ? cancelPress : undefined}
                                         >
                                             {idx === 0 ? i + 1 : student[col] ?? ""}
 
@@ -281,8 +283,8 @@ const McaTwo = () => {
                     setSelectedStudent(null);
                 }}
                 onDelete={() => handleDeleteStudent(selectedStudent)}
-
-            />
+                
+                />
             <ColumnActionModal
                 column={selectedColumn}
                 onClose={() => setSelectedColumn(null)}
@@ -313,8 +315,9 @@ const McaTwo = () => {
                     );
                     setSelectedColumn(null);
                 }}
-            />
+                />
 
+                </section>
         </>
     );
 };

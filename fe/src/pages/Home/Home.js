@@ -9,7 +9,7 @@ const Home = () => {
 
     return (
         <>
-            <section className="mt-5">
+            <section id="home" className=" mt-5">
                 <div className="banner_bg pt-3 pb-5">
                     <div className="banner container rounded-3 shadow-lg p-3 my-5">
                         {/* heading */}

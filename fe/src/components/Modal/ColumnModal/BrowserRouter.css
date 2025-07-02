@@ -1,24 +1,26 @@
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1050;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(2px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* transition: all .5s ease-in-out; */
-}
-
-.modal-dialog.glass-modal {
-    width: 100%;
-    max-width: 500px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(30px);
-    border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-    padding: 1rem;
+#columnactionmodal{
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(2px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* transition: all .5s ease-in-out; */
+    }
+    
+    .modal-dialog.glass-modal {
+        width: 100%;
+        max-width: 500px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(30px);
+        border-radius: 12px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+    }
 }
