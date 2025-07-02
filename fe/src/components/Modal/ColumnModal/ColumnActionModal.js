@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css"; // ensure styles are applied
+import "./BrowserRouter.css"; // ensure styles are applied
 
 const ColumnActionModal = ({
   column,

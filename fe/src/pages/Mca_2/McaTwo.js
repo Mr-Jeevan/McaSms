@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import "./index.css"
+import "./McaTwo.css"
 
 
 import StudentActionModal from '../../components/Modal/StudentModal/StudentActionModal.js'

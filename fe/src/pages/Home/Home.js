@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import wall_e_modal from "../../assets/imgs/wall_e_modal.png";
 
-import "./index.css"
+import "./Home.css"
 
 const Home = () => {
 

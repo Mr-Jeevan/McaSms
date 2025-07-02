@@ -1,4 +1,4 @@
-import "./index.css";
+import "./StudentActionModal.css";
 
 const StudentActionModal = ({ student, onClose, onEdit, onDelete }) => {
   if (!student) return null;
