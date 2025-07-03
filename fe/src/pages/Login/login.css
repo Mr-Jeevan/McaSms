@@ -1,12 +1,29 @@
 #login {
-
-    .sms {
-        color: #ff00ea;
+    .login_card {
+        transition: 0.2s ease-out;
     }
 
-    .insert {
-        color: white;
+    .login_card:focus-within {
+        border: #af24ff 1px solid;
+        -webkit-box-shadow: 0px 0px 100px 5px rgba(206, 169, 255, 1);
+        -moz-box-shadow: 0px 0px 100px 5px rgba(206, 169, 255, 1);
+        box-shadow: 0px 0px 100px 5px rgba(206, 169, 255, 1);
     }
 
+    /* input{
+        background: none;
+        outline: 1px #ffffff;
+    } */
+    input:focus {
+        outline: none;
+        box-shadow: none;
+        border: 1px solid #af24ff;
+    }
 
+    .btn:focus, .btn:hover{
+        background: var(--clr-two-dark);
+    }
+    .btn:active{
+        background-color: var(--clr-one);
+    }
 }
