@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import './LandingPage.css'
+import "@fontsource/k2d"; 
+
 
 // import "./ImageSlider.scss";
 
