@@ -40,6 +40,8 @@ function Header({ setIsLoggedIn }) {
 
     return (
         <>
+        <section id="header">
+
             <nav className="navbar p-1 navbar-expand-lg border-bottom fixed-top mb-5  ">
                 <div className="container-fluid d-flex align-items-center justify-content-between">
 
@@ -80,7 +82,7 @@ function Header({ setIsLoggedIn }) {
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
-                                >
+                                    >
                                     Class
                                 </button>
 
@@ -97,6 +99,7 @@ function Header({ setIsLoggedIn }) {
             </nav>
 
 
+                                    </section>
         </>
     )
 }
