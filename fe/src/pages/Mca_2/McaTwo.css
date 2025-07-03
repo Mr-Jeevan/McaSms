@@ -1,0 +1,44 @@
+#mcatwo{
+    
+    .table-responsive {
+        max-height: 100vh;
+        
+        
+    }
+    
+    thead .head{
+        background: #d4beff;
+    }
+    
+    thead th {
+        background-color: #e9c2ff;
+        position: sticky;
+        top: -1px;
+        /* z-index: 2; */
+    }
+    
+    th.sticky-col,
+    td.sticky-col {
+        position: sticky;
+        left: -1px;
+        min-width: auto;
+    }
+    
+    th.sticky-col-2,
+    td.sticky-col-2 {
+        position: sticky;
+        left: 30px;
+        min-width: auto;
+        
+    }
+    
+    td.sticky-col-2,
+    td.sticky-col {
+        z-index: 1;
+    }
+    
+    th.sticky-col,
+    th.sticky-col-2 {
+        z-index: 3;
+    }
+}

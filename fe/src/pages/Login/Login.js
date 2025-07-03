@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 const Login = ({ setIsLoggedIn }) => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
@@ -11,7 +12,7 @@ const Login = ({ setIsLoggedIn }) => {
         e.preventDefault();
 
         // validation
-        if (id === 'admin' && password === 'password') {
+        if (id === 'admin' && password === 'p') {
             setIsLoggedIn(true);
             localStorage.setItem("isLoggedIn", "true");
             navigate('/home', { replace: true });
