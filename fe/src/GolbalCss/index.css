@@ -61,3 +61,12 @@
     border: 1px solid #ccc;
     color: #fff;
 }
+
+#tsparticles {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}

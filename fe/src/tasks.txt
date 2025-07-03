@@ -22,3 +22,5 @@ banner
 navbar
 
 https://colorgradient.dev/gradient-generator/
+https://gradienty.codes/
+https://codepen.io/

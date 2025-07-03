@@ -1,6 +1,19 @@
 #login {
+    /* background-size: 100% 100%;
+    background-position: 0px 0px, 0px 0px;
+    background-image: radial-gradient(75% 75% at -1% 100%, #FF02DD30 1%, #073AFF00 100%), conic-gradient(from 0deg at 50% 50%, #330040FF 0%, #240030FF 100%); */
+
+    /*  */
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+
     .login_card {
         transition: 0.2s ease-out;
+        position: relative;
+        z-index: 1;
+
     }
 
     .login_card:focus-within {
@@ -20,10 +33,12 @@
         border: 1px solid #af24ff;
     }
 
-    .btn:focus, .btn:hover{
+    .btn:focus,
+    .btn:hover {
         background: var(--clr-two-dark);
     }
-    .btn:active{
+
+    .btn:active {
         background-color: var(--clr-one);
     }
 }
