@@ -113,6 +113,7 @@ while (alive) {
                     </div>
                 </div>
             </div>
+            <hr />
             <footer>
                 <div className="content">
                     <div className="d-flex justify-content-between">
