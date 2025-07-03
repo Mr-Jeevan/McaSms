@@ -20,3 +20,5 @@ emmet => {
 
 banner
 navbar
+
+https://colorgradient.dev/gradient-generator/
