@@ -1,12 +1,12 @@
 #landingpage {
     .navbar .btn {
-        border: 2px solid #E411C7;
+        border: 2px solid var(--clr-two);
         color: #9B7EBD;
         transition: .2s ease-in-out;
     }
 
     .btn:hover {
-        background-color: #E411C7;
+        background-color: var(--clr-two);
         color: #fff;
     }
 
@@ -50,7 +50,7 @@
     }
 
     .login_btn .btn {
-        background: #e61fc4;
+        background: var(--clr-two);
         letter-spacing: 8px;
         -webkit-box-shadow: -0px 0px 100px 14px rgba(3, 240, 255, 1);
         -moz-box-shadow: -0px 0px 100px 14px rgba(3, 240, 255, 1);
