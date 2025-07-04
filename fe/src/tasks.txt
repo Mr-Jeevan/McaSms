@@ -28,3 +28,7 @@ https://codepen.io/
 
 npm install @tsparticles/react @tsparticles/slim
 Remove-Item -Path "node_modules", "package-lock.json" -Recurse -Force
+
+background-size: 100% 100%;
+background-position: 0px 0px,0px 0px,0px 0px,0px 0px;
+background-image: conic-gradient(from 0deg at 50% 50%, #00014F00 0%, #05031F 100%),radial-gradient(75% 75% at 5% 55%, #7A00FF38 0%, #073AFF00 100%),radial-gradient(75% 75% at 112% 44%, #00B5FF17 0%, #073AFF00 100%),linear-gradient(0deg, #28004FFF 0%, #05031F 100%);/* A dark background for the stars */
