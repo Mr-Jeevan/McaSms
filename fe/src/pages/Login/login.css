@@ -23,6 +23,30 @@
         box-shadow: 0px 0px 100px 5px rgba(206, 169, 255, 1);
     }
 
+
+
+    .login-bg {
+        position: relative;
+        min-height: 100vh;
+        background: #0c0824; /* Your dark base color */
+        overflow: hidden;
+        }
+
+        /* The glowing ellipse */
+    .login-bg::before {
+        content: "";
+        position: absolute;
+        top: -100px;      /* Adjust as needed */
+        right: 80px;      /* Adjust as needed */
+        width: 320px;     /* Size of ellipse */
+        height: 320px;
+        background: radial-gradient(circle at 60% 40%, #bf38ff 0%, #297fff 60%, #e1a1ff 100%);
+        opacity: 0.5;     /* Make it soft */
+        filter: blur(40px);
+        z-index: 0;
+        }
+
+
     /* input{
         background: none;
         outline: 1px #ffffff;
@@ -41,4 +65,14 @@
     .btn:active {
         background-color: var(--clr-one);
     }
+
+    .span{
+        color: #af24ff;
+    }
+
+    .vh {
+  height: 83vh;
+}
+
+
 }

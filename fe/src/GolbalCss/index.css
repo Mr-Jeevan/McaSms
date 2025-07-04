@@ -8,23 +8,23 @@
 }
 
 .bg-one {
-    background-color: #05031F;
+    background-color: var(--clr-one);
 }
 
 .bg-two {
-    background-color: #af24ff;
+    background-color: var(--clr-two);
 }
 
 .bg-mid {
-    background-color: #8746EB;
+    background-color: var(--clr-mid);
 }
 
 .bg-four {
-    background-color: #D5BFFC;
+    background-color: var(--clr-four);
 }
 
 .bg-last {
-    background-color: #FFFFFF26;
+    background-color: var(--clr-last);
 }
 
 .clr-one {

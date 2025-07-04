@@ -37,12 +37,23 @@ const Login = ({ setIsLoggedIn }) => {
 
     // console.log("tsParticles Init ✅")
     return (
-        <section id='login' >
+        <section id='login' className='login-bg'>
             <ParticlesBackground />
+
+             <div>
+                <nav className="navbar header ">
+                    <div className="container-fluid mx-5">
+                        <span className="navbar-brand fs-3 span">SMS</span>
+                        <form className="d-flex" >
+                            {/* <Link to="/login">
+                                <button className="btn px-5 rounded-2" type="submit">LOGIN</button>
+                            </Link> */}
+                        </form>
+                    </div>
+                </nav>
+            </div>
             <div className="container">
-
-
-                <div className="contents d-flex justify-content-center align-items-center vh-100">
+                <div className="contents d-flex justify-content-center align-items-center vh">
                     <div className="row">
                         <div className="col-6">
                             <div className="heading text-center my-5">
@@ -50,7 +61,7 @@ const Login = ({ setIsLoggedIn }) => {
                             </div>
                         </div>
                         <div className="col-6">
-                            <div className="card login_card glass_card mx-auto rounded">
+                            <div className="card login_card glass_card mx-auto rounded ">
                                 <div className="card-header text-center text-light">LOGIN</div>
                                 <div className="card-body">
                                     <form onSubmit={onSubmit}>
