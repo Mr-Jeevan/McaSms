@@ -13,7 +13,29 @@
     height: 100%; /* Make it fill the height of its parent */
     overflow: hidden; /* Hide anything that goes outside */
     z-index: 0; /* Make sure it's behind other content (like the login form) */
-   background-size: 100% 100%;
-background-position: 0px 0px,0px 0px,0px 0px,0px 0px;
-background-image: conic-gradient(from 0deg at 50% 50%, #00014F00 0%, #05031F 100%),radial-gradient(75% 75% at 5% 55%, #7A00FF38 0%, #073AFF00 100%),radial-gradient(75% 75% at 112% 44%, #00B5FF17 0%, #073AFF00 100%),linear-gradient(0deg, #28004FFF 0%, #05031F 100%);/* A dark background for the stars */
+   
+    background: #0c0824; /* Your dark base color */
+
+    background: radial-gradient(circle at 60% 40%, #bf38ff 0%, #297fff 60%, #e1a1ff 100%);
+
+}
+
+
+.login-bg {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* The glowing ellipse */
+.login-bg::before {
+    content: "";
+    position: absolute;
+    top: -100px;      /* Adjust as needed */
+    right: 80px;      /* Adjust as needed */
+    width: 320px;     /* Size of ellipse */
+    height: 320px;
+    opacity: 0.5;     /* Make it soft */
+  filter: blur(40px);
+  z-index: 0;
 }

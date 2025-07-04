@@ -38,7 +38,18 @@ const Login = ({ setIsLoggedIn }) => {
     return (
             <ParticlePage >
         <section id='login' >
-
+         <div>
+                <nav className="navbar header ">
+                    <div className="container-fluid mx-5">
+                        <span className="navbar-brand fs-3 span">SMS</span>
+                        <form className="d-flex" >
+                            {/* <Link to="/login">
+                                <button className="btn px-5 rounded-2" type="submit">LOGIN</button>
+                            </Link> */}
+                        </form>
+                    </div>
+                </nav>
+            </div>
             <div className="container">
                 <div className="contents d-flex justify-content-center align-items-center vh">
                     <div className="row">
