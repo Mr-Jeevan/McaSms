@@ -1,0 +1,72 @@
+:root {
+    --clr-one: #05031F;
+    --clr-two: #af24ff;
+    --clr-mid: #8746EB;
+    --clr-four: #D5BFFC;
+    --clr-last: #FFFFFF26;
+    --clr-two-dark: #8d1dce;
+}
+
+.bg-one {
+    background-color: #05031F;
+}
+
+.bg-two {
+    background-color: #af24ff;
+}
+
+.bg-mid {
+    background-color: #8746EB;
+}
+
+.bg-four {
+    background-color: #D5BFFC;
+}
+
+.bg-last {
+    background-color: #FFFFFF26;
+}
+
+.clr-one {
+    color: #05031F;
+}
+
+.clr-two {
+    color: #af24ff;
+}
+
+.clr-mid {
+    color: #8746EB;
+}
+
+.clr-four {
+    color: #D5BFFC;
+}
+
+.clr-last {
+    color: #FFFFFF26;
+}
+
+.glass_card {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.transparent_input {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: #fff;
+}
+
+#tsparticles {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}

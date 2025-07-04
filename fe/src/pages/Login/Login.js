@@ -1,8 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import "../../GolbalCss/index.css"
 import "./login.css"
+
+import ParticlesBackground from "../../components/ParticlesBackground/ParticlesBackground";
+
 
 const Login = ({ setIsLoggedIn }) => {
     const [id, setId] = useState('');
@@ -32,47 +35,47 @@ const Login = ({ setIsLoggedIn }) => {
 
 
 
+    // console.log("tsParticles Init ✅")
     return (
         <section id='login' >
-            <div className='sms fs-1 p-5'> SMS</div>
-            <div className="d-flex justify-content-center align-items-center ">
-                <div className="bg-light opacity-25 w-50 d-flex flex-column justify-content-center align-items-center p-4 rounded-4">
-                    <div className="w-50 d-flex flex-column justify-content-center align-items-center ">
-                        <div className="pb-3 mb-4 text-center fw-bold fs-3">LOGIN</div>
-                        <div className="w-100  ">
-                            <form onSubmit={onSubmit}>
-                                <div className="mb-3  ">
-                                    <input
-                                        type="text"
-                                        name="id"
-                                        placeholder="User ID"
-                                        className="insert w-100 text-white p-3 px-5 rounded-4 border-light"
-                                        value={id}
-                                        onChange={(e) => setId(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        placeholder="Password"
-                                        className="insert w-100 p-3 rounded-4 px-5 border-light"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div className='d-flex justify-content-center'>
-                                    <button type="submit" className="btn btn-primary w-50 rounded-4">Login</button>
-                                </div>
-                            </form>
+            <ParticlesBackground />
+            <div className="container">
+
+
+                <div className="contents d-flex justify-content-center align-items-center vh-100">
+                    <div className="row">
+                        <div className="col-6">
+                            <div className="heading text-center my-5">
+                                <h1>MCA STUDENTS DETAILS</h1>
+                            </div>
                         </div>
+                        <div className="col-6">
+                            <div className="card login_card glass_card mx-auto rounded">
+                                <div className="card-header text-center text-light">LOGIN</div>
+                                <div className="card-body">
+                                    <form onSubmit={onSubmit}>
+                                        <div className="mb-3">
+                                            <input
+                                                type="text" name="id" placeholder="User ID" className="id form-control  transparent_input rounded" value={id} onChange={(e) => setId(e.target.value)} required
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <input
+                                                type="password" name="password" placeholder="Password" className="password form-control  transparent_input rounded" value={password} onChange={(e) => setPassword(e.target.value)} required
+                                            />
+                                        </div>
+                                        <div className="text-center">
+                                            <button type="submit" className="btn bg-two w-50 form-control">Lemme In</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            
-        </section>
+        </section >
     );
 };
 
