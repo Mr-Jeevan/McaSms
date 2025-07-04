@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import "../../GolbalCss/index.css"
 import "./login.css"
 
-import ParticlesBackground from "../../components/ParticlesBackground/ParticlesBackground";
-
+import ParticlePage from '../../components/ParticlesBackground/ParticlePage';
 
 const Login = ({ setIsLoggedIn }) => {
     const [id, setId] = useState('');
@@ -37,8 +36,8 @@ const Login = ({ setIsLoggedIn }) => {
 
     // console.log("tsParticles Init ✅")
     return (
+            <ParticlePage >
         <section id='login' >
-            <ParticlesBackground />
             <div className="container">
 
 
@@ -76,6 +75,7 @@ const Login = ({ setIsLoggedIn }) => {
                 </div>
             </div>
         </section >
+        </ParticlePage>
     );
 };
 
