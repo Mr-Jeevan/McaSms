@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import "../../GolbalCss/index.css"
 import "./login.css"
 
-import ParticlesBackground from "../../components/ParticlesBackground/ParticlesBackground";
-import ParticlePage from '../../components/tries/ParticlePage';
+import ParticlePage from '../../components/ParticlesBackground/ParticlePage';
 
 const Login = ({ setIsLoggedIn }) => {
     const [id, setId] = useState('');

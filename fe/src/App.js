@@ -10,7 +10,7 @@ import McaTwo from '../src/pages/Mca_2/McaTwo';
 import Edit from '../src/pages/Editpage/Edit';
 import AddStudents from '../src/pages/addStudents/AddStudents';
 
-import ParticlePage from './components/tries/ParticlePage';
+import ParticlePage from './components/ParticlesBackground/ParticlePage';
 
 import EditableTable from './components/utils-tries/EditableTable';
 // import LongPress from './components/tries/LongPress'
