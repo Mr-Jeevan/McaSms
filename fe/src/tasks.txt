@@ -23,4 +23,11 @@ navbar
 
 https://colorgradient.dev/gradient-generator/
 https://gradienty.codes/
+<<<<<<< HEAD
 https://codepen.io/
+=======
+https://codepen.io/
+
+
+npm install @tsparticles/react @tsparticles/slim
+>>>>>>> 0d0c92870cbe11d3881f949c01fdcc511bbf303e
