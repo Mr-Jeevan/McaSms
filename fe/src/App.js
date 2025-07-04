@@ -10,6 +10,8 @@ import McaTwo from '../src/pages/Mca_2/McaTwo';
 import Edit from '../src/pages/Editpage/Edit';
 import AddStudents from '../src/pages/addStudents/AddStudents';
 
+import ParticlePage from './components/ParticlesBackground/ParticlePage';
+
 import EditableTable from './components/utils-tries/EditableTable';
 // import LongPress from './components/tries/LongPress'
 
@@ -37,6 +39,7 @@ function App() {
             <Route path='/EditableTable' element={<EditableTable />} />
             <Route path="/edit/:id" element={<Edit />} />
             <Route path="/AddStudents" element={<AddStudents />} />
+            <Route path="/ParticlePage" element={<ParticlePage />} />
             {/* Add more routes as needed */}
           </Routes>
         </div>

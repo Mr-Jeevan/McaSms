@@ -149,26 +149,26 @@ body {
         animation: hero_diamond 2s ease-in-out infinite;
     }
 
-    @keyframes hero_diamond {
-        0% {
-            transform: translateY(10px);
-        }
+}
+@keyframes hero_diamond {
+    0% {
+        transform: translateY(10px);
+    }
 
-        25% {
+    25% {
 
-            transform: translateX(-15px);
-        }
+        transform: translateX(-15px);
+    }
 
-        50% {
-            transform: translateY(-15px);
-        }
+    50% {
+        transform: translateY(-15px);
+    }
 
-        75% {
-            transform: translateX(15px);
-        }
+    75% {
+        transform: translateX(15px);
+    }
 
-        100% {
-            transform: translateY(10px);
-        }
+    100% {
+        transform: translateY(10px);
     }
 }

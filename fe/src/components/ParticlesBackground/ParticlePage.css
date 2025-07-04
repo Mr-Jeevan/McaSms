@@ -1,0 +1,21 @@
+/* This is the big box that holds everything */
+.particle-background-container {
+    position: relative; /* Important for positioning things inside it */
+    width: 100vw; /* Make it take up the full width of the screen */
+    height: 100vh; /* Make it take up the full height of the screen */
+    overflow: hidden; /* Hide anything that goes outside its edges */
+    /* background-color: #1a2a4c; */
+     /* A solid dark background if stars are loading or transparent */
+}
+
+/* This is the layer where your login form or other content will sit */
+.particle-content-overlay {
+    position: relative; /* Very important! This makes it sit ON TOP of the stars */
+    z-index: 1; /* A higher z-index means it's on top of things with lower z-index (like the stars at z-index 0) */
+    width: 100%;
+    height: 100%;
+    /* You can add flexbox or grid here to center your login form */
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}
