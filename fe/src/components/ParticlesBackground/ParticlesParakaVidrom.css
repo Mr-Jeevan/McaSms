@@ -1,0 +1,19 @@
+/* This makes sure the canvas itself doesn't have extra space around it */
+.particles-canvas-wrapper canvas {
+    display: block; /* Very important! */
+    background-color: transparent; /* The stars will be on a clear background */
+}
+
+/* This wrapper will make sure our canvas fills its parent */
+.particles-canvas-wrapper {
+    position: absolute; /* Allows us to place it precisely */
+    top: 0;
+    left: 0;
+    width: 100%; /* Make it fill the width of its parent */
+    height: 100%; /* Make it fill the height of its parent */
+    overflow: hidden; /* Hide anything that goes outside */
+    z-index: 0; /* Make sure it's behind other content (like the login form) */
+   background-size: 100% 100%;
+background-position: 0px 0px,0px 0px,0px 0px,0px 0px;
+background-image: conic-gradient(from 0deg at 50% 50%, #00014F00 0%, #05031F 100%),radial-gradient(75% 75% at 5% 55%, #7A00FF38 0%, #073AFF00 100%),radial-gradient(75% 75% at 112% 44%, #00B5FF17 0%, #073AFF00 100%),linear-gradient(0deg, #28004FFF 0%, #05031F 100%);/* A dark background for the stars */
+}
