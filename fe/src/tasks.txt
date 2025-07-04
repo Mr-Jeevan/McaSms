@@ -27,3 +27,4 @@ https://codepen.io/
 
 
 npm install @tsparticles/react @tsparticles/slim
+Remove-Item -Path "node_modules", "package-lock.json" -Recurse -Force
