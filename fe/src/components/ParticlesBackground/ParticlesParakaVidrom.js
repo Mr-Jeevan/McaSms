@@ -9,7 +9,7 @@ const STAR_MAX_SIZE = 3; // Biggest star size
 const STAR_MIN_SPEED = 0.1; // Slowest star speed
 const STAR_MAX_SPEED = 0.3; // Fastest star speed
 
-const SHOOTING_STAR_INTERVAL_MS = 1000; // Average interval for new shooting stars (1 second)
+const SHOOTING_STAR_INTERVAL_MS = 800; // Average interval for new shooting stars (1 second)
 const SHOOTING_STAR_MIN_LENGTH = 50; // Shortest shooting star tail
 const SHOOTING_STAR_MAX_LENGTH = 150; // Longest shooting star tail
 const SHOOTING_STAR_MIN_SPEED = 5; // Slowest shooting star
