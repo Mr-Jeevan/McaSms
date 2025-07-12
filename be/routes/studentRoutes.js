@@ -26,7 +26,8 @@ router.get('/:id', async (req, res) => {
 // POST create new student
 router.post('/', async (req, res) => {
   try {
-    const newStudent = new Student({ data: req.body });
+    // FIX: Extract the student data from req.body.data
+    const newStudent = new Student({ data: req.body.data });
     const saved = await newStudent.save();
     res.status(201).json(saved);
   } catch (err) {
@@ -37,9 +38,10 @@ router.post('/', async (req, res) => {
 // PUT update student
 router.put('/:id', async (req, res) => {
   try {
+    // FIX: Use req.body.data to update the student's data field
     const updated = await Student.findByIdAndUpdate(
       req.params.id,
-      { data: req.body },
+      { data: req.body.data }, // Use req.body.data instead of req.body
       { new: true }
     );
     if (!updated) return res.status(404).json({ message: 'Student not found' });

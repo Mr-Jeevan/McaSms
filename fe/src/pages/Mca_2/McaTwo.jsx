@@ -1,43 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import "./McaTwo.css";
-
-import StudentActionModal from '../../components/Modal/StudentModal/StudentActionModal';
-import ColumnActionModal from "../../components/Modal/ColumnModal/ColumnActionModal";
-
+import './McaTwo.css';
 import { exportToExcel, exportFilteredToExcel } from '../../utils/ExportToExcel';
 
 const McaTwo = () => {
     const navigate = useNavigate();
 
     const [students, setStudents] = useState([]);
-    const [selectedStudent, setSelectedStudent] = useState(null);
-
     const [allColumns, setAllColumns] = useState([]);
     const [selectedColumns, setSelectedColumns] = useState([]);
-    const [selectedColumn, setSelectedColumn] = useState(null);
-
     const [searchTerm, setSearchTerm] = useState('');
     const [newColumn, setNewColumn] = useState('');
-    const [pressTimer, setPressTimer] = useState(null);
-    const [colPressTimer, setColPressTimer] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+    const [editedCell, setEditedCell] = useState({});
 
-    // Filtered list based on search
     const displayedStudents = students.filter(student =>
         allColumns.some(col =>
             String(student[col.title] ?? '').toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
 
-    // Load column headers from API
     useEffect(() => {
         const fetchColumns = async () => {
             try {
                 const res = await fetch('http://localhost:3001/api/headers');
                 const data = await res.json();
                 setAllColumns(data);
-                setSelectedColumns(data.slice(0, 3).map(col => col.title)); // titles only
+                setSelectedColumns(data.slice(0, 3).map(col => col.title));
             } catch (err) {
                 console.error('Failed to fetch columns:', err);
             }
@@ -45,13 +34,13 @@ const McaTwo = () => {
         fetchColumns();
     }, []);
 
-    // Load students
     useEffect(() => {
         const fetchStudents = async () => {
             try {
                 const res = await fetch('http://localhost:3001/api/students');
                 const data = await res.json();
-                setStudents(data);
+                const flattened = data.map(s => ({ _id: s._id, ...s.data }));
+                setStudents(flattened);
             } catch (err) {
                 console.error('Failed to load students:', err);
             }
@@ -59,24 +48,31 @@ const McaTwo = () => {
         fetchStudents();
     }, []);
 
-    const handleDeleteStudent = async (student) => {
-        try {
-            await fetch(`http://localhost:3001/api/students/${student._id}`, {
-                method: 'DELETE'
-            });
-            setStudents(prev => prev.filter(s => s._id !== student._id));
-        } catch (err) {
-            console.error('Failed to delete student:', err);
+    const handleEditToggle = async () => {
+        if (editMode) {
+            const updates = Object.entries(editedCell);
+            for (const [studentId, fields] of updates) {
+                const student = students.find(s => s._id === studentId);
+                const updatedStudent = { ...student, ...fields };
+                const dataOnly = { ...updatedStudent };
+                delete dataOnly._id;
+
+                try {
+                    const res = await fetch(`http://localhost:3001/api/students/${studentId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ data: dataOnly }),
+                    });
+                    const saved = await res.json();
+                    setStudents(prev => prev.map(s => s._id === studentId ? { _id: saved._id, ...saved.data } : s));
+                } catch (err) {
+                    console.error(`Error saving student ${studentId}:`, err);
+                }
+            }
+            setEditedCell({});
         }
-        setSelectedStudent(null);
+        setEditMode(prev => !prev);
     };
-
-
-    const handleMouseDown = (student) => {
-        const timer = setTimeout(() => setSelectedStudent(student), 300);
-        setPressTimer(timer);
-    };
-    const cancelPress = () => clearTimeout(pressTimer);
 
     const handleCheckboxChange = (colTitle) => {
         setSelectedColumns(prev =>
@@ -87,11 +83,11 @@ const McaTwo = () => {
     };
 
     return (
-        <section id='mcatwo'>
-            <div className='container mt-5'>
+        <section id="mcatwo">
+            <div className="container mt-5">
                 <h1>MCA II Management System</h1>
 
-                {/* Accordion Section */}
+                {/* Accordion for actions */}
                 <div className="accordion accordion-flush shadow-sm border rounded" id="accordionFlushExample">
                     <div className="accordion-item">
                         <h2 className="accordion-header">
@@ -113,24 +109,20 @@ const McaTwo = () => {
                                     <button
                                         className="btn btn-success"
                                         onClick={async () => {
-                                            if (
-                                                newColumn &&
-                                                !allColumns.some(c => c.title.toLowerCase() === newColumn.trim().toLowerCase())
-                                            ) {
+                                            const title = newColumn.trim();
+                                            if (title && !allColumns.some(c => c.title.toLowerCase() === title.toLowerCase())) {
                                                 try {
                                                     const res = await fetch('http://localhost:3001/api/headers', {
                                                         method: 'POST',
                                                         headers: { 'Content-Type': 'application/json' },
-                                                        body: JSON.stringify({ title: newColumn.trim() })
+                                                        body: JSON.stringify({ title })
                                                     });
                                                     const result = await res.json();
                                                     setAllColumns(prev => [...prev, result]);
-                                                    setStudents(prev =>
-                                                        prev.map(student => ({
-                                                            ...student,
-                                                            [newColumn.trim()]: ""
-                                                        }))
-                                                    );
+                                                    setStudents(prev => prev.map(student => ({
+                                                        ...student,
+                                                        [title]: ''
+                                                    })));
                                                     setNewColumn('');
                                                 } catch (err) {
                                                     console.error('Failed to add column:', err);
@@ -148,7 +140,7 @@ const McaTwo = () => {
                                     <button className="btn btn-primary mb-3" onClick={() => exportFilteredToExcel(displayedStudents, 'Mca_2_filtered.xlsx', selectedColumns)}>
                                         Export Selected
                                     </button>
-                                    <button className='btn btn-warning mb-3' onClick={() => exportToExcel(displayedStudents, 'Mca_2_all.xlsx')}>
+                                    <button className="btn btn-warning mb-3" onClick={() => exportToExcel(displayedStudents, 'Mca_2_all.xlsx')}>
                                         Export All
                                     </button>
                                 </div>
@@ -185,7 +177,7 @@ const McaTwo = () => {
                     </div>
                 </div>
 
-                {/* Search & Add */}
+                {/* Search and Add */}
                 <div className="my-3 d-flex justify-content-between">
                     <input type="text" className="form-control w-50" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                     <button
@@ -196,24 +188,22 @@ const McaTwo = () => {
                             allColumns.forEach(col => {
                                 if (col.title !== 'ID') newStudent[col.title] = '';
                             });
-
-                            try {
-                                const res = await fetch('http://localhost:3001/api/students', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(newStudent),
-                                });
-                                const savedStudent = await res.json();
-                                setStudents(prev => [...prev, savedStudent]);
-                            } catch (err) {
-                                console.error('Error adding student:', err);
-                            }
+                            const res = await fetch('http://localhost:3001/api/students', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ data: newStudent })
+                            });
+                            const saved = await res.json();
+                            setStudents(prev => [...prev, { _id: saved._id, ...saved.data }]);
                         }}
-
                     >
                         ➕ Add Student
                     </button>
                 </div>
+
+                <button className="btn btn-secondary mb-3" onClick={handleEditToggle}>
+                    {editMode ? 'Disable Edit' : 'Enable Edit'}
+                </button>
 
                 {/* Table */}
                 <div className="overflow-auto table-responsive">
@@ -221,21 +211,7 @@ const McaTwo = () => {
                         <thead style={{ color: "white" }}>
                             <tr>
                                 {allColumns.map((col, idx) => (
-                                    <th
-                                        key={col._id}
-                                        className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
-                                        onMouseDown={() => {
-                                            const timer = setTimeout(() => setSelectedColumn(col), 500);
-                                            setColPressTimer(timer);
-                                        }}
-                                        onMouseUp={() => clearTimeout(colPressTimer)}
-                                        onMouseLeave={() => clearTimeout(colPressTimer)}
-                                        onTouchStart={() => {
-                                            const timer = setTimeout(() => setSelectedColumn(col), 500);
-                                            setColPressTimer(timer);
-                                        }}
-                                        onTouchEnd={() => clearTimeout(colPressTimer)}
-                                    >
+                                    <th key={col._id} className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}>
                                         {col.title}
                                     </th>
                                 ))}
@@ -243,18 +219,28 @@ const McaTwo = () => {
                         </thead>
                         <tbody>
                             {displayedStudents.map((student, i) => (
-                                <tr key={student.sno || i}>
+                                <tr key={student._id || i}>
                                     {allColumns.map((col, idx) => (
-                                        <td
-                                            key={col._id}
-                                            className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
-                                            onMouseDown={idx === 0 ? () => handleMouseDown(student) : undefined}
-                                            onMouseUp={idx === 0 ? cancelPress : undefined}
-                                            onMouseLeave={idx === 0 ? cancelPress : undefined}
-                                            onTouchStart={idx === 0 ? () => handleMouseDown(student) : undefined}
-                                            onTouchEnd={idx === 0 ? cancelPress : undefined}
-                                        >
-                                            {idx === 0 ? i + 1 : student[col.title] ?? ""}
+                                        <td key={col._id} className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}>
+                                            {editMode && col.title !== 'ID' ? (
+                                                <input
+                                                    type="text"
+                                                    className="form-control form-control-sm"
+                                                    value={editedCell[student._id]?.[col.title] ?? student[col.title] ?? ''}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value;
+                                                        setEditedCell(prev => ({
+                                                            ...prev,
+                                                            [student._id]: {
+                                                                ...prev[student._id],
+                                                                [col.title]: value,
+                                                            },
+                                                        }));
+                                                    }}
+                                                />
+                                            ) : (
+                                                idx === 0 ? i + 1 : student[col.title] ?? ""
+                                            )}
                                         </td>
                                     ))}
                                 </tr>
@@ -263,61 +249,6 @@ const McaTwo = () => {
                     </table>
                 </div>
             </div>
-
-            {/* Student Modal */}
-            <StudentActionModal
-                student={selectedStudent}
-                onClose={() => setSelectedStudent(null)}
-                onEdit={() => {
-                    navigate(`/Edit/${selectedStudent.id}`);
-                    setSelectedStudent(null);
-                }}
-                onDelete={() => handleDeleteStudent(selectedStudent)}
-            />
-
-            {/* Column Modal */}
-            <ColumnActionModal
-                column={selectedColumn}
-                onClose={() => setSelectedColumn(null)}
-                onRename={async () => {
-                    const newName = prompt("Enter new column name", selectedColumn.title);
-                    if (newName && newName !== selectedColumn.title) {
-                        try {
-                            const res = await fetch(`http://localhost:3001/api/headers/${selectedColumn._id}`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ title: newName })
-                            });
-                            const updated = await res.json();
-                            setAllColumns(cols => cols.map(c => c._id === updated._id ? updated : c));
-                            setStudents(prev => prev.map(student => {
-                                const copy = { ...student };
-                                copy[updated.title] = copy[selectedColumn.title];
-                                delete copy[selectedColumn.title];
-                                return copy;
-                            }));
-                        } catch (err) {
-                            console.error('Rename error', err);
-                        }
-                    }
-                    setSelectedColumn(null);
-                }}
-                onDelete={async () => {
-                    try {
-                        await fetch(`http://localhost:3001/api/headers/${selectedColumn._id}`, { method: 'DELETE' });
-                        setAllColumns(cols => cols.filter(c => c._id !== selectedColumn._id));
-                        setSelectedColumns(cols => cols.filter(title => title !== selectedColumn.title));
-                        setStudents(prev => prev.map(s => {
-                            const copy = { ...s };
-                            delete copy[selectedColumn.title];
-                            return copy;
-                        }));
-                    } catch (err) {
-                        console.error('Delete error', err);
-                    }
-                    setSelectedColumn(null);
-                }}
-            />
         </section>
     );
 };
