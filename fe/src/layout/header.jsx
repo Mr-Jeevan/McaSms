@@ -55,15 +55,6 @@ function Header({ setIsLoggedIn }) {
                             <span style={{ fontSize: '24px', fontWeight: 'bold' }}>MCA</span>
                         </div>
 
-                        {/* Sidebar Toggle Icon */}
-                        <span style={{ cursor: 'pointer', fontSize: '25px' }} id="sidebarToggle" onClick={sideBarHideShow}>
-                            {iconChange ? (
-                                <i onClick={iconChangeForSlider} className="fa-solid fa-circle-arrow-right"></i>
-                            ) : (
-                                <i onClick={iconChangeForSlider} className="fa-solid fa-circle-arrow-left"></i>
-                            )}
-                        </span>
-
                         {/* Toggler for mobile */}
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
                             <span className="navbar-toggler-icon"></span>
