@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devstart": "nodemon server.js"
+    "start": "node server.js",
+    "devstart": "nodemon server.js",
+    "setup": "node scripts/setup-firebase.js",
+    "test-connection": "node tests/test-connection.js",
+    "init-db": "node scripts/init-database.js",
+    "test-firebase": "node tests/test-firebase-direct.js",
+    "organize": "node scripts/organize-project.js"
   },
   "keywords": [],
   "author": "",
@@ -12,8 +18,9 @@
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
     "express": "^5.1.0",
-    "mongoose": "^8.15.1"
+    "firebase-admin": "^12.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

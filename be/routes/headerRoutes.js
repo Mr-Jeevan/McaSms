@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ColumnHeader = require('../models/ColumnHeader');
+const headerService = require('../services/headerService');
 
 // POST /api/headers — Add new column
 router.post('/', async (req, res) => {
@@ -8,13 +8,12 @@ router.post('/', async (req, res) => {
         const { title } = req.body;
         if (!title) return res.status(400).json({ message: "Title is required" });
 
-        const existing = await ColumnHeader.findOne({ title });
-        if (existing) return res.status(409).json({ message: "Header already exists" });
-
-        const newHeader = new ColumnHeader({ title });
-        await newHeader.save();
+        const newHeader = await headerService.createHeader(title);
         res.status(201).json(newHeader);
     } catch (err) {
+        if (err.message === 'Header already exists') {
+            return res.status(409).json({ message: "Header already exists" });
+        }
         res.status(500).json({ message: "Server error", error: err.message });
     }
 });
@@ -22,7 +21,7 @@ router.post('/', async (req, res) => {
 // GET /api/headers — Get all columns
 router.get('/', async (req, res) => {
     try {
-        const headers = await ColumnHeader.find().sort({ createdAt: 1 });
+        const headers = await headerService.getAllHeaders();
         res.json(headers);
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });
@@ -35,12 +34,7 @@ router.put('/:id', async (req, res) => {
         const { title } = req.body;
         const { id } = req.params;
 
-        const updated = await ColumnHeader.findByIdAndUpdate(
-            id,
-            { title },
-            { new: true }
-        );
-
+        const updated = await headerService.updateHeader(id, title);
         if (!updated) return res.status(404).json({ message: 'Header not found' });
 
         res.json(updated);
@@ -48,15 +42,16 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({ message: 'Failed to rename header', error: err.message });
     }
 });
+
 // DELETE /api/headers/:id
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const deleted = await ColumnHeader.findByIdAndDelete(id);
+        const deleted = await headerService.deleteHeader(id);
 
         if (!deleted) return res.status(404).json({ message: 'Header not found' });
 
-        res.json({ message: 'Header deleted successfully' });
+        res.json(deleted);
     } catch (err) {
         res.status(500).json({ message: 'Failed to delete header', error: err.message });
     }

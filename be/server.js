@@ -1,18 +1,22 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const { admin } = require('./config/firebase');
 
 const headerRoutes = require('./routes/headerRoutes');
-const studentRoutes = require('./routes/studentRoutes'); // ✅
+const studentRoutes = require('./routes/studentRoutes');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose
-  .connect('mongodb://localhost:27017/srms')
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+// Initialize Firebase connection
+try {
+  console.log('Firebase Admin SDK initialized successfully');
+  console.log('Project ID:', admin.app().options.projectId);
+} catch (error) {
+  console.error('Firebase initialization error:', error.message);
+  console.log('Please make sure to update your Firebase configuration in config/firebase.js');
+}
 
 app.use('/api/headers', headerRoutes);
 app.use('/api/students', studentRoutes); // ✅
