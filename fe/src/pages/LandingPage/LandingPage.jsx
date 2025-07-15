@@ -93,7 +93,9 @@ while (alive) {
 
             <div className="login_btn my-5 py-3">
                 <div className="d-flex justify-content-center ">
-                    <button className='btn px-4'><>LOGIN</></button>
+                    <Link to="/login">
+                    <button className='btn px-4'>LOGIN</button>
+                    </Link>
                 </div>
             </div>
 

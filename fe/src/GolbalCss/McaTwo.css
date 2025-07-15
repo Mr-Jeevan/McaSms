@@ -1,8 +1,12 @@
 #mcatwo{
     
+    .accordion-button:focus, .accordion-button:enabled {
+        background-color: var(--clr-four);
+    }
+
+    
     .table-responsive {
         max-height: 100vh;
-        
         
     }
     
