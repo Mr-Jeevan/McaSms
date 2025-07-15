@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './McaTwo.css';
+import '../../GolbalCss/McaTwo.css';
+
+
 import { exportToExcel, exportFilteredToExcel } from '../../utils/ExportToExcel';
 
 const McaTwo = () => {
@@ -88,26 +90,26 @@ const McaTwo = () => {
                 <h1>MCA II Management System</h1>
 
                 {/* Accordion for actions */}
-                <div className="accordion accordion-flush shadow-sm border rounded" id="accordionFlushExample">
+                <div className="accordion accordion-flush shadow-sm border rounded bg-light" id="accordionFlushExample">
                     <div className="accordion-item">
                         <h2 className="accordion-header">
-                            <button className="accordion-button btn collapsed bg-info text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
-                                <div className='text-center'>ACTIONS</div>
+                            <button className="accordion-button collapsed bg-four rounded text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+                                <div className='txt-bold'>ACTIONS</div>
                             </button>
                         </h2>
 
-                        <div id="flush-collapseOne" className="accordion-collapse collapse">
-                            <div className="accordion-body">
+                        <div id="flush-collapseOne" className="accordion-collapse collapse ">
+                            <div className="accordion-body bg-light ">
                                 <div className="d-flex mb-3">
                                     <input
                                         type="text"
-                                        className="form-control me-2"
+                                        className="form-control me-2 bg-two"
                                         placeholder="Enter new column name"
                                         value={newColumn}
                                         onChange={(e) => setNewColumn(e.target.value)}
                                     />
                                     <button
-                                        className="btn btn-success"
+                                        className="btn bg-one"
                                         onClick={async () => {
                                             const title = newColumn.trim();
                                             if (title && !allColumns.some(c => c.title.toLowerCase() === title.toLowerCase())) {
@@ -154,18 +156,22 @@ const McaTwo = () => {
                                                         const index = colIndex * Math.ceil(allColumns.length / 4) + rowIndex;
                                                         const col = allColumns[index];
                                                         return col ? (
-                                                            <td key={col._id}>
-                                                                <label className="form-check-label">
+                                                            <td key={col._id} className="align-middle" onClick={() => handleCheckboxChange(col.title)} style={{ cursor: 'pointer' }}>
+                                                                <div className="form-check d-flex align-items-center gap-2">
                                                                     <input
                                                                         type="checkbox"
                                                                         className="form-check-input"
+                                                                        id={`check-${col._id}`}
                                                                         checked={selectedColumns.includes(col.title)}
                                                                         onChange={() => handleCheckboxChange(col.title)}
                                                                     />
-                                                                    {col.title}
-                                                                </label>
+                                                                    <label className="form-check-label" htmlFor={`check-${col._id}`}>
+                                                                        {col.title}
+                                                                    </label>
+                                                                </div>
                                                             </td>
                                                         ) : <td key={colIndex}></td>;
+
                                                     })}
                                                 </tr>
                                             ))}
