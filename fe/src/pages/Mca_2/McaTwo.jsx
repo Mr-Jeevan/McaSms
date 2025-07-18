@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './McaTwo.css';
+import '../../GolbalCss/McaTwo.css';
+
+
 import { exportToExcel, exportFilteredToExcel } from '../../utils/ExportToExcel';
 
 const McaTwo = () => {
@@ -39,7 +41,7 @@ const McaTwo = () => {
             try {
                 const res = await fetch('http://localhost:3001/api/students');
                 const data = await res.json();
-                const flattened = data.map(s => ({ _id: s._id, ...s.data }));
+                const flattened = data.map(s => ({ _id: s.id, ...s.data })); // Use s.id from backend
                 setStudents(flattened);
             } catch (err) {
                 console.error('Failed to load students:', err);
@@ -52,19 +54,38 @@ const McaTwo = () => {
         if (editMode) {
             const updates = Object.entries(editedCell);
             for (const [studentId, fields] of updates) {
-                const student = students.find(s => s._id === studentId);
-                const updatedStudent = { ...student, ...fields };
-                const dataOnly = { ...updatedStudent };
-                delete dataOnly._id;
-
                 try {
+                    // Find the current student's full flattened data from state
+                    const currentStudentInState = students.find(s => s._id === studentId);
+                    if (!currentStudentInState) {
+                        console.error(`Student with ID ${studentId} not found in state.`);
+                        continue; // Skip to next update if student not found
+                    }
+
+                    // Prepare the data to send to the backend.
+                    // The backend expects a 'data' field containing the student's attributes.
+                    const dataToSendToBackend = {
+                        ...currentStudentInState, // Start with all existing flattened fields
+                        ...fields // Overlay with only the edited fields
+                    };
+                    delete dataToSendToBackend._id; // Remove the frontend's internal _id for the backend payload
+
                     const res = await fetch(`http://localhost:3001/api/students/${studentId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ data: dataOnly }),
+                        body: JSON.stringify({ data: dataToSendToBackend }), // Send the merged, flattened data
                     });
-                    const saved = await res.json();
-                    setStudents(prev => prev.map(s => s._id === studentId ? { _id: saved._id, ...saved.data } : s));
+
+                    const savedResult = await res.json(); // This will be { id: "...", data: { ...flattenedData }, createdAt: "...", updatedAt: "..." }
+
+                    // Update the frontend state with the correctly flattened data from the saved result
+                    setStudents(prev =>
+                        prev.map(s =>
+                            s._id === studentId
+                                ? { _id: savedResult.id, ...savedResult.data } // Correctly flatten saved data
+                                : s
+                        )
+                    );
                 } catch (err) {
                     console.error(`Error saving student ${studentId}:`, err);
                 }
@@ -73,6 +94,7 @@ const McaTwo = () => {
         }
         setEditMode(prev => !prev);
     };
+
 
     const handleCheckboxChange = (colTitle) => {
         setSelectedColumns(prev =>
@@ -88,26 +110,26 @@ const McaTwo = () => {
                 <h1>MCA II Management System</h1>
 
                 {/* Accordion for actions */}
-                <div className="accordion accordion-flush shadow-sm border rounded" id="accordionFlushExample">
+                <div className="accordion accordion-flush shadow-sm border rounded bg-light" id="accordionFlushExample">
                     <div className="accordion-item">
                         <h2 className="accordion-header">
-                            <button className="accordion-button btn collapsed bg-info text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
-                                <div className='text-center'>ACTIONS</div>
+                            <button className="accordion-button collapsed bg-four rounded text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+                                <div className='txt-bold'>ACTIONS</div>
                             </button>
                         </h2>
 
-                        <div id="flush-collapseOne" className="accordion-collapse collapse">
-                            <div className="accordion-body">
+                        <div id="flush-collapseOne" className="accordion-collapse collapse ">
+                            <div className="accordion-body bg-light ">
                                 <div className="d-flex mb-3">
                                     <input
                                         type="text"
-                                        className="form-control me-2"
+                                        className="form-control me-2 bg-two"
                                         placeholder="Enter new column name"
                                         value={newColumn}
                                         onChange={(e) => setNewColumn(e.target.value)}
                                     />
                                     <button
-                                        className="btn btn-success"
+                                        className="btn bg-one"
                                         onClick={async () => {
                                             const title = newColumn.trim();
                                             if (title && !allColumns.some(c => c.title.toLowerCase() === title.toLowerCase())) {
@@ -154,18 +176,22 @@ const McaTwo = () => {
                                                         const index = colIndex * Math.ceil(allColumns.length / 4) + rowIndex;
                                                         const col = allColumns[index];
                                                         return col ? (
-                                                            <td key={col._id}>
-                                                                <label className="form-check-label">
+                                                            <td key={col._id} className="align-middle" onClick={() => handleCheckboxChange(col.title)} style={{ cursor: 'pointer' }}>
+                                                                <div className="form-check d-flex align-items-center gap-2">
                                                                     <input
                                                                         type="checkbox"
                                                                         className="form-check-input"
+                                                                        id={`check-${col._id}`}
                                                                         checked={selectedColumns.includes(col.title)}
                                                                         onChange={() => handleCheckboxChange(col.title)}
                                                                     />
-                                                                    {col.title}
-                                                                </label>
+                                                                    <label className="form-check-label" htmlFor={`check-${col._id}`}>
+                                                                        {col.title}
+                                                                    </label>
+                                                                </div>
                                                             </td>
                                                         ) : <td key={colIndex}></td>;
+
                                                     })}
                                                 </tr>
                                             ))}
@@ -232,11 +258,12 @@ const McaTwo = () => {
                                                         setEditedCell(prev => ({
                                                             ...prev,
                                                             [student._id]: {
-                                                                ...prev[student._id],
+                                                                ...(prev[student._id] || {}),
                                                                 [col.title]: value,
                                                             },
                                                         }));
                                                     }}
+
                                                 />
                                             ) : (
                                                 idx === 0 ? i + 1 : student[col.title] ?? ""
