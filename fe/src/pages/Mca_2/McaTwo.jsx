@@ -237,8 +237,8 @@ const McaTwo = () => {
                 {/* Table */}
                 <div className="overflow-auto table-responsive glass_card p-2 pt-2 rounded">
                     <div className='text-'><h3 className='clr-three text-center'>MCA II Student Details</h3></div>
-                    <div className="rounded-* overflow-hidden shadow-sm">
-                        <table className="table borderless-row table-light ">
+                    <div className=" overflow-hidden">
+                        <table className="table borderless-row table-light mb-0 ">
                             <thead className='bg-mid' style={{ color: "white" }}>
                                 <tr className='bg-mid'>
                                     {allColumns.map((col, idx) => (
