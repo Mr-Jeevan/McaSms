@@ -2,9 +2,15 @@ import { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import '../../GolbalCss/McaTwo.css';
 
-import API_ENDPOINTS from '../../config/apiconfig';
-
 import { exportToExcel, exportFilteredToExcel } from '../../utils/ExportToExcel';
+
+import {
+    getMcaTwoStudents,
+    addMcaTwoStudent,
+    updateMcaTwoStudent,
+    getHeaders,
+    addHeader
+} from '../services/apiService'; 
 
 const McaTwo = () => {
     // const navigate = useNavigate();
@@ -23,6 +29,7 @@ const McaTwo = () => {
         )
     );
 
+    //headers fetching
     useEffect(() => {
         const fetchColumns = async () => {
             try {
@@ -37,10 +44,11 @@ const McaTwo = () => {
         fetchColumns();
     }, []);
 
+    //students fetching
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const res = await fetch(`${API_ENDPOINTS.headers}`);
+                const res = await fetch(`${API_ENDPOINTS.mcaTwoStudents}`);
                 const data = await res.json();
                 const flattened = data.map(s => ({ _id: s._id, ...s.data }));
                 setStudents(flattened);
@@ -51,6 +59,7 @@ const McaTwo = () => {
         fetchStudents();
     }, []);
 
+    //editing students
     const handleEditToggle = async () => {
         if (editMode) {
             const updates = Object.entries(editedCell);

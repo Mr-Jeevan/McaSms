@@ -8,10 +8,10 @@ dotenv.config();
 
 // Import your Mongoose Models
 // Ensure these import paths and model names match your actual files and exports
-const McaOneStudent = require('./models/McaOneStudents'); // Assuming McaOneStudent.js exports a model named 'McaOneStudent'
-const McaTwoStudent = require('./models/McaTwoStudents'); // Assuming McaTwoStudent.js exports a model named 'McaTwoStudent'
+const McaOneStudent = require('./models/mcaOneStudents'); // Assuming McaOneStudent.js exports a model named 'McaOneStudent'
+const McaTwoStudent = require('./models/mcaTwoStudents'); // Assuming McaTwoStudent.js exports a model named 'McaTwoStudent'
 
-const headerRoutes = require('./routes/HeaderRoutes'); 
+const headerRoutes = require('./routes/headerRoutes');
 
 // Import the generic CRUD router factory
 const createCrudRouter = require('./routes/createCrudRouter'); // Correct path to your generic router

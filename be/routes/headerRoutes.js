@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ColumnHeader = require('../models/Header');
+const ColumnHeader = require('../models/header');
 
 // POST /api/headers — Add new column
 router.post('/', async (req, res) => {
