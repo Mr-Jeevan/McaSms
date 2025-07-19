@@ -1,22 +1,27 @@
 :root {
-    --clr-one: #05031F;
+    --clr-one: #3B1E54;
     --clr-two: #af24ff;
-    --clr-mid: #8746EB;
+    --clr-three: #8746EB;
+    --clr-mid: #E1A1FF;
     --clr-four: #D5BFFC;
     --clr-last: #FFFFFF26;
     --clr-two-dark: #8d1dce;
 }
 
 .bg-one {
-    background-color: #05031F;
+    background-color: #3B1E54;
 }
 
 .bg-two {
     background-color: #af24ff;
 }
 
-.bg-mid {
+.bg-three {
     background-color: #8746EB;
+}
+
+.bg-mid {
+    background-color: #E1A1FF;
 }
 
 .bg-four {
@@ -28,15 +33,19 @@
 }
 
 .clr-one {
-    color: #05031F;
+    color: #3B1E54;
 }
 
 .clr-two {
     color: #af24ff;
 }
 
-.clr-mid {
+.clr-three {
     color: #8746EB;
+}
+
+.clr-mid {
+    color: #E1A1FF;
 }
 
 .clr-four {
@@ -58,7 +67,7 @@
 
 .transparent_input {
     background-color: transparent;
-    border: 1px solid #ccc;
+    border: 1px solid var(--clr-two);
     color: #fff;
 }
 

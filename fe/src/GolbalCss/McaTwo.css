@@ -5,9 +5,18 @@
     }
 
     
+    .row .btn:active, .row .btn:hover {
+        background-color: var(--clr-two-dark);
+
+    }
+
+    .search_input::placeholder{
+        color: #fff;
+    }
+
     .table-responsive {
         max-height: 100vh;
-        
+
     }
     
     thead .head{
@@ -15,10 +24,9 @@
     }
     
     thead th {
-        background-color: #e9c2ff;
+        background-color: var(--clr-four);
         position: sticky;
         top: -1px;
-        /* z-index: 2; */
     }
     
     th.sticky-col,
