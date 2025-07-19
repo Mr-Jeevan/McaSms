@@ -26,7 +26,7 @@ const McaTwo = () => {
     useEffect(() => {
         const fetchColumns = async () => {
             try {
-                const res = await fetch(`${API_ENDPOINTS.mcaOneHeaders}`);
+                const res = await fetch(`${API_ENDPOINTS.headers}`);
                 const data = await res.json();
                 setAllColumns(data);
                 setSelectedColumns(data.slice(0, 3).map(col => col.title));
@@ -40,7 +40,7 @@ const McaTwo = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const res = await fetch(`${API_ENDPOINTS.mcaOneStudents}`);
+                const res = await fetch(`${API_ENDPOINTS.headers}`);
                 const data = await res.json();
                 const flattened = data.map(s => ({ _id: s._id, ...s.data }));
                 setStudents(flattened);
@@ -61,7 +61,7 @@ const McaTwo = () => {
                 delete dataOnly._id;
 
                 try {
-                    const res = await fetch(`${API_ENDPOINTS.mcaOneStudents}/${studentId}`, {
+                    const res = await fetch(`${API_ENDPOINTS.mcaTwoStudents}/${studentId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ data: dataOnly }),
@@ -95,12 +95,12 @@ const McaTwo = () => {
 
                     <div className="accordion-item rounded">
                         <h2 className="accordion-header">
-                            <button className="accordion-button collapsed bg-four rounded " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+                            <button className="accordion-button collapsed bg-four rounded " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo">
                                 <div className='txt-bold'>ACTIONS</div>
                             </button>
                         </h2>
                         {/* action btns */}
-                        <div id="flush-collapseOne" className="accordion-collapse collapse rounded">
+                        <div id="flush-collapseTwo" className="accordion-collapse collapse rounded">
                             <div className="accordion-body bg-light ">
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
@@ -114,12 +114,12 @@ const McaTwo = () => {
                                                 onChange={(e) => setNewColumn(e.target.value)}
                                             />
                                             <button
-                                                className="btn bg-one text-white"
+                                                className="btn bg-Two text-white"
                                                 onClick={async () => {
                                                     const title = newColumn.trim();
                                                     if (title && !allColumns.some(c => c.title.toLowerCase() === title.toLowerCase())) {
                                                         try {
-                                                            const res = await fetch(`${API_ENDPOINTS.mcaOneHeaders}`, {
+                                                            const res = await fetch(`${API_ENDPOINTS.headers}`, {
                                                                 method: 'POST',
                                                                 headers: { 'Content-Type': 'application/json' },
                                                                 body: JSON.stringify({ title })
@@ -145,7 +145,7 @@ const McaTwo = () => {
                                     {/* Right Column for Export Buttons */}
                                     <div className="col-md-6 mb-3"> {/* Use col-md-6 for responsiveness, mb-3 for bottom margin */}
                                         <div className="d-grid gap-2 d-md-flex justify-content-md-end"> {/* justify-content-md-end to push buttons to the right */}
-                                            <button className="btn bg-one text-white" onClick={() => exportFilteredToExcel(displayedStudents, 'Mca_2_filtered.xlsx', selectedColumns)}>
+                                            <button className="btn bg-Two text-white" onClick={() => exportFilteredToExcel(displayedStudents, 'Mca_2_filtered.xlsx', selectedColumns)}>
                                                 Export Selected
                                             </button>
                                             <button className="btn bg-mid " onClick={() => exportToExcel(displayedStudents, 'Mca_2_all.xlsx')}>
@@ -213,7 +213,7 @@ const McaTwo = () => {
                                 allColumns.forEach(col => {
                                     if (col.title !== 'ID') newStudent[col.title] = '';
                                 });
-                                const res = await fetch(`${API_ENDPOINTS.mcaOneStudents}`, {
+                                const res = await fetch(`${API_ENDPOINTS.mcaTwoStudents}`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ data: newStudent })
