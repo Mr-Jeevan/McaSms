@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import wall_e_modal from "../../assets/imgs/wall_e_modal.png";
 
-import "./Home.css"
+import "../../GolbalCss/Home.css"
 
 const Home = () => {
 
@@ -23,7 +23,7 @@ const Home = () => {
 
                                 <div className="card_container_mca1 ms-5">
 
-                                    <Link className="nav-link" to="/">
+                                    <Link className="nav-link" to="/McaOne">
 
                                         <div className="card my-3 c_1 wallet">
                                             <div className="overlay"></div>

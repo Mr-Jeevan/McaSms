@@ -78,7 +78,7 @@ function Header({ setIsLoggedIn }) {
                                     </button>
 
                                     <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <Link className="dropdown-item" to="/LongPress">MCA I</Link>
+                                        <Link className="dropdown-item" to="/McaOne">MCA I</Link>
                                         <Link className="dropdown-item" to="/McaTwo">MCA II</Link>
                                     </div>
                                 </li>

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const headerRoutes = require('./routes/headerRoutes');
-const studentRoutes = require('./routes/studentRoutes'); // ✅
+const McaTwoRoutes = require('./routes/McaTwoRoutes'); // ✅
 
 const app = express();
 app.use(cors());
@@ -15,7 +15,7 @@ mongoose
   .catch((err) => console.error('MongoDB connection error:', err));
 
 app.use('/api/headers', headerRoutes);
-app.use('/api/students', studentRoutes); // ✅
+app.use('/api/students', McaTwoRoutes); // ✅
 
 const port = 3001;
 app.listen(port, () => {
