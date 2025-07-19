@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import '../../GolbalCss/McaTwo.css';
 
+import API_ENDPOINTS from '../../config/apiconfig';
 
 import { exportToExcel, exportFilteredToExcel } from '../../utils/ExportToExcel';
 
@@ -25,7 +26,7 @@ const McaTwo = () => {
     useEffect(() => {
         const fetchColumns = async () => {
             try {
-                const res = await fetch('http://localhost:3001/api/headers');
+                const res = await fetch(`${API_ENDPOINTS.mcaOneHeaders}`);
                 const data = await res.json();
                 setAllColumns(data);
                 setSelectedColumns(data.slice(0, 3).map(col => col.title));
@@ -39,7 +40,7 @@ const McaTwo = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const res = await fetch('http://localhost:3001/api/students');
+                const res = await fetch(`${API_ENDPOINTS.mcaOneStudents}`);
                 const data = await res.json();
                 const flattened = data.map(s => ({ _id: s._id, ...s.data }));
                 setStudents(flattened);
@@ -60,7 +61,7 @@ const McaTwo = () => {
                 delete dataOnly._id;
 
                 try {
-                    const res = await fetch(`http://localhost:3001/api/students/${studentId}`, {
+                    const res = await fetch(`${API_ENDPOINTS.mcaOneStudents}/${studentId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ data: dataOnly }),
@@ -118,7 +119,7 @@ const McaTwo = () => {
                                                     const title = newColumn.trim();
                                                     if (title && !allColumns.some(c => c.title.toLowerCase() === title.toLowerCase())) {
                                                         try {
-                                                            const res = await fetch('http://localhost:3001/api/headers', {
+                                                            const res = await fetch(`${API_ENDPOINTS.mcaOneHeaders}`, {
                                                                 method: 'POST',
                                                                 headers: { 'Content-Type': 'application/json' },
                                                                 body: JSON.stringify({ title })
@@ -212,7 +213,7 @@ const McaTwo = () => {
                                 allColumns.forEach(col => {
                                     if (col.title !== 'ID') newStudent[col.title] = '';
                                 });
-                                const res = await fetch('http://localhost:3001/api/students', {
+                                const res = await fetch(`${API_ENDPOINTS.mcaOneStudents}`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ data: newStudent })
