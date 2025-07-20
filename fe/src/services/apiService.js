@@ -38,14 +38,26 @@ const apiRequest = async (url, method = 'GET', data = null) => {
 
 // --- API Functions for MCA Two Students ---
 export const getMcaTwoStudents = () => apiRequest(API_ENDPOINTS.mcaTwoStudents);
-export const addMcaTwoStudent = (studentData) => apiRequest(API_ENDPOINTS.mcaTwoStudents, 'POST', { data: studentData });
-export const updateMcaTwoStudent = (id, studentData) => apiRequest(`${API_ENDPOINTS.mcaTwoStudents}/${id}`, 'PUT', { data: studentData });
+
+// CHANGE THIS LINE: Pass studentData directly as the payload to apiRequest
+// McaTwo.jsx already sends { data: newStudent }, so apiRequest will receive this
+export const addMcaTwoStudent = (studentData) => apiRequest(API_ENDPOINTS.mcaTwoStudents, 'POST', studentData);
+
+// CHANGE THIS LINE: Pass studentData directly as the payload to apiRequest
+// McaTwo.jsx already sends { data: dataOnly }, so apiRequest will receive this
+export const updateMcaTwoStudent = (id, studentData) => apiRequest(`${API_ENDPOINTS.mcaTwoStudents}/${id}`, 'PUT', studentData);
+
 export const deleteMcaTwoStudent = (id) => apiRequest(`${API_ENDPOINTS.mcaTwoStudents}/${id}`, 'DELETE'); // Example delete
 
 // --- API Functions for MCA One Students (for future use in McaOne.jsx) ---
 export const getMcaOneStudents = () => apiRequest(API_ENDPOINTS.mcaOneStudents);
-export const addMcaOneStudent = (studentData) => apiRequest(API_ENDPOINTS.mcaOneStudents, 'POST', { data: studentData });
-export const updateMcaOneStudent = (id, studentData) => apiRequest(`${API_ENDPOINTS.mcaOneStudents}/${id}`, 'PUT', { data: studentData });
+
+// CHANGE THIS LINE:
+export const addMcaOneStudent = (studentData) => apiRequest(API_ENDPOINTS.mcaOneStudents, 'POST', studentData);
+
+// CHANGE THIS LINE:
+export const updateMcaOneStudent = (id, studentData) => apiRequest(`${API_ENDPOINTS.mcaOneStudents}/${id}`, 'PUT', studentData);
+
 export const deleteMcaOneStudent = (id) => apiRequest(`${API_ENDPOINTS.mcaOneStudents}/${id}`, 'DELETE'); // Example delete
 
 // --- API Functions for Headers ---

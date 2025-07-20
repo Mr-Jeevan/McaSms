@@ -2,130 +2,177 @@ const express = require('express');
 
 /**
  * Creates an Express Router with standard CRUD operations for a given Mongoose Model.
- * It also handles specific request/response formats for 'Student' and 'Header' models.
- * @param {mongoose.Model} Model - The Mongoose Model (e.g., McaOneStudent, McaTwoStudent, Header).
- * @returns {express.Router} An Express Router configured with CRUD routes.
+ * Handles special cases for Student models (with Map data) and Header models.
+ * @param {mongoose.Model} Model - The Mongoose Model
+ * @returns {express.Router} Configured CRUD router
  */
 const createCrudRouter = (Model) => {
     const router = express.Router();
 
-    // Helper to check if the model is a Student model
+    // Helpers to check model type
     const isStudentModel = Model.modelName.includes('Student');
-    // Helper to check if the model is the Header model
-    const isHeaderModel = Model.modelName === 'Header'; // Or 'McaTwoHeader' if that's the actual model name in Mongoose.model()
+    const isHeaderModel = Model.modelName.includes('Header');
+
+    // Convert Map to plain object for responses
+    const mapToObject = (map) => map ? Object.fromEntries(map.entries()) : {};
+
+    // Convert request data to Map for Student models
+    const prepareStudentData = (input) => {
+        const data = input.data || input;
+        return data ? new Map(Object.entries(data)) : new Map();
+    };
 
     // GET all documents
     router.get('/', async (req, res) => {
         try {
             const documents = await Model.find();
             if (isStudentModel) {
-                // Frontend expects student data wrapped in 'data'
-                const formattedDocuments = documents.map(doc => ({ _id: doc._id, data: doc.toObject() }));
-                res.json(formattedDocuments);
+                const formatted = documents.map(doc => ({
+                    _id: doc._id,
+                    data: mapToObject(doc.data),
+                    createdAt: doc.createdAt,
+                    updatedAt: doc.updatedAt
+                }));
+                res.json(formatted);
             } else {
-                // Headers and other models are returned directly
                 res.json(documents);
             }
         } catch (err) {
-            res.status(500).json({ message: "Server error", error: err.message }); // Added error detail
+            res.status(500).json({ 
+                message: "Server error", 
+                error: err.message 
+            });
         }
     });
 
-    // GET a single document by ID (remains generic)
+    // GET single document
     router.get('/:id', async (req, res) => {
         try {
             const document = await Model.findById(req.params.id);
-            if (!document) return res.status(404).json({ message: 'Document not found' });
-            res.json(document);
+            if (!document) {
+                return res.status(404).json({ message: 'Document not found' });
+            }
+
+            if (isStudentModel) {
+                res.json({
+                    _id: document._id,
+                    data: mapToObject(document.data),
+                    createdAt: document.createdAt,
+                    updatedAt: document.updatedAt
+                });
+            } else {
+                res.json(document);
+            }
         } catch (err) {
-            res.status(500).json({ message: "Server error", error: err.message }); // Added error detail
+            res.status(500).json({ 
+                message: "Server error", 
+                error: err.message 
+            });
         }
     });
 
-    // POST a new document
+    // POST new document
     router.post('/', async (req, res) => {
-        let documentData;
-        if (isStudentModel) {
-            // Student models expect data nested under 'data' key
-            documentData = req.body.data;
-        } else if (isHeaderModel) {
-            // Header model expects 'title' directly in the body
-            const { title } = req.body;
-            if (!title) return res.status(400).json({ message: "Title is required" });
-
-            const existing = await Model.findOne({ title });
-            if (existing) return res.status(409).json({ message: "Header already exists" });
-
-            documentData = { title };
-        } else {
-            // Generic fallback for other models
-            documentData = req.body;
-        }
-
-        const newDocument = new Model(documentData);
         try {
-            const savedDocument = await newDocument.save();
+            let documentData;
+            
             if (isStudentModel) {
-                // Frontend expects student data wrapped in 'data'
-                res.status(201).json({ _id: savedDocument._id, data: savedDocument.toObject() });
+                documentData = { 
+                    data: prepareStudentData(req.body) 
+                };
+            } else if (isHeaderModel) {
+                const { title } = req.body;
+                if (!title) {
+                    return res.status(400).json({ message: "Title is required" });
+                }
+                documentData = { title };
             } else {
-                // Headers and other models are returned directly
+                documentData = req.body;
+            }
+
+            const newDocument = new Model(documentData);
+            const savedDocument = await newDocument.save();
+
+            if (isStudentModel) {
+                res.status(201).json({
+                    _id: savedDocument._id,
+                    data: mapToObject(savedDocument.data),
+                    createdAt: savedDocument.createdAt,
+                    updatedAt: savedDocument.updatedAt
+                });
+            } else {
                 res.status(201).json(savedDocument);
             }
         } catch (err) {
-            res.status(400).json({ message: "Invalid data or server error", error: err.message }); // Added error detail
+            res.status(400).json({
+                message: "Validation or save error",
+                error: err.message,
+                errors: err.errors || undefined
+            });
         }
     });
 
-    // PUT/PATCH (Update) a document by ID
+    // PUT update document
     router.put('/:id', async (req, res) => {
         try {
             const { id } = req.params;
             let updateData;
 
             if (isStudentModel) {
-                // Student models expect update data nested under 'data' key
-                updateData = req.body.data;
+                updateData = { 
+                    data: prepareStudentData(req.body) 
+                };
             } else if (isHeaderModel) {
-                // Header model expects 'title' directly in the body for updates
                 const { title } = req.body;
-                if (!title) return res.status(400).json({ message: "Title is required" });
+                if (!title) {
+                    return res.status(400).json({ message: "Title is required" });
+                }
                 updateData = { title };
             } else {
-                // Generic fallback for other models
                 updateData = req.body;
             }
 
             const updatedDocument = await Model.findByIdAndUpdate(
                 id,
                 updateData,
-                { new: true, runValidators: true } // `new: true` returns the updated document, `runValidators` ensures schema validation
+                { new: true, runValidators: true }
             );
-            if (!updatedDocument) return res.status(404).json({ message: 'Document not found' });
+
+            if (!updatedDocument) {
+                return res.status(404).json({ message: 'Document not found' });
+            }
 
             if (isStudentModel) {
-                // Frontend expects student data wrapped in 'data'
-                res.json({ _id: updatedDocument._id, data: updatedDocument.toObject() });
+                res.json({
+                    _id: updatedDocument._id,
+                    data: mapToObject(updatedDocument.data),
+                    createdAt: updatedDocument.createdAt,
+                    updatedAt: updatedDocument.updatedAt
+                });
             } else {
-                // Headers and other models are returned directly
                 res.json(updatedDocument);
             }
         } catch (err) {
-            res.status(400).json({ message: 'Failed to update document', error: err.message }); // Added error detail
+            res.status(400).json({ 
+                message: 'Failed to update document', 
+                error: err.message 
+            });
         }
     });
 
-    // DELETE a document by ID (remains generic)
+    // DELETE document
     router.delete('/:id', async (req, res) => {
         try {
-            const { id } = req.params;
-            const deletedDocument = await Model.findByIdAndDelete(id);
-
-            if (!deletedDocument) return res.status(404).json({ message: 'Document not found' });
-
+            const deletedDocument = await Model.findByIdAndDelete(req.params.id);
+            if (!deletedDocument) {
+                return res.status(404).json({ message: 'Document not found' });
+            }
             res.json({ message: 'Document deleted successfully' });
         } catch (err) {
-            res.status(500).json({ message: 'Failed to delete document', error: err.message }); // Added error detail
+            res.status(500).json({ 
+                message: 'Failed to delete document', 
+                error: err.message 
+            });
         }
     });
 

@@ -9,4 +9,4 @@ const columnHeaderSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('ColumnHeaders', columnHeaderSchema);
+module.exports = mongoose.model('headers', columnHeaderSchema);
