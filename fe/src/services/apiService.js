@@ -14,7 +14,7 @@ const apiRequest = async (url, method = 'GET', data = null) => {
         headers: {
             'Content-Type': 'application/json',
             // Add any authorization headers here if you implement authentication later
-            // 'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            // 'Authorization': `Bearer ${localStorage.getItem('token')}`,\
         },
     };
 
@@ -38,30 +38,18 @@ const apiRequest = async (url, method = 'GET', data = null) => {
 
 // --- API Functions for MCA Two Students ---
 export const getMcaTwoStudents = () => apiRequest(API_ENDPOINTS.mcaTwoStudents);
-
-// CHANGE THIS LINE: Pass studentData directly as the payload to apiRequest
-// McaTwo.jsx already sends { data: newStudent }, so apiRequest will receive this
 export const addMcaTwoStudent = (studentData) => apiRequest(API_ENDPOINTS.mcaTwoStudents, 'POST', studentData);
-
-// CHANGE THIS LINE: Pass studentData directly as the payload to apiRequest
-// McaTwo.jsx already sends { data: dataOnly }, so apiRequest will receive this
 export const updateMcaTwoStudent = (id, studentData) => apiRequest(`${API_ENDPOINTS.mcaTwoStudents}/${id}`, 'PUT', studentData);
-
-export const deleteMcaTwoStudent = (id) => apiRequest(`${API_ENDPOINTS.mcaTwoStudents}/${id}`, 'DELETE'); // Example delete
+export const deleteMcaTwoStudent = (id) => apiRequest(`${API_ENDPOINTS.mcaTwoStudents}/${id}`, 'DELETE');
 
 // --- API Functions for MCA One Students (for future use in McaOne.jsx) ---
 export const getMcaOneStudents = () => apiRequest(API_ENDPOINTS.mcaOneStudents);
-
-// CHANGE THIS LINE:
 export const addMcaOneStudent = (studentData) => apiRequest(API_ENDPOINTS.mcaOneStudents, 'POST', studentData);
-
-// CHANGE THIS LINE:
 export const updateMcaOneStudent = (id, studentData) => apiRequest(`${API_ENDPOINTS.mcaOneStudents}/${id}`, 'PUT', studentData);
-
-export const deleteMcaOneStudent = (id) => apiRequest(`${API_ENDPOINTS.mcaOneStudents}/${id}`, 'DELETE'); // Example delete
+export const deleteMcaOneStudent = (id) => apiRequest(`${API_ENDPOINTS.mcaOneStudents}/${id}`, 'DELETE');
 
 // --- API Functions for Headers ---
 export const getHeaders = () => apiRequest(API_ENDPOINTS.headers);
 export const addHeader = (title) => apiRequest(API_ENDPOINTS.headers, 'POST', { title });
-export const updateHeader = (id, newTitle) => apiRequest(`${API_ENDPOINTS.headers}/${id}`, 'PUT', { title: newTitle }); // Example update
-export const deleteHeader = (id) => apiRequest(`${API_ENDPOINTS.headers}/${id}`, 'DELETE'); // Example delete
+export const updateHeader = (id, newTitle) => apiRequest(`${API_ENDPOINTS.headers}/${id}`, 'PUT', { title: newTitle }); // Added/Confirmed
+export const deleteHeader = (id) => apiRequest(`${API_ENDPOINTS.headers}/${id}`, 'DELETE'); // Added/Confirmed

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // import { useNavigate } from 'react-router-dom';
 import "../../GolbalCss/McaOne.css"; // Keep CSS import as is, assuming shared styles
 
@@ -10,7 +10,11 @@ import {
     updateMcaOneStudent, // Changed from updateMcaTwoStudent
     getHeaders,
     addHeader,
+    updateHeader, // Make sure this is imported
+    deleteHeader, // Make sure this is imported
 } from "../../services/apiService";
+
+import ColumnActionModal from "../../components/Modal/ColumnModal/ColumnActionModal"; // Import the new modal component
 
 const McaOne = () => {
     // Changed component name from McaTwo
@@ -23,6 +27,18 @@ const McaOne = () => {
     const [newColumn, setNewColumn] = useState("");
     const [editMode, setEditMode] = useState(false);
     const [editedCell, setEditedCell] = useState({});
+
+
+    // States for ColumnActionModal and long press
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedColumnForAction, setSelectedColumnForAction] = useState(null);
+    const [renameInputValue, setRenameInputValue] = useState(""); // State for rename input in modal
+    const longPressTimer = useRef(null); // Ref to hold the long press timeout
+
+    // Long press duration (in milliseconds)
+    const LONG_PRESS_DURATION = 700; // Adjust as needed
+
+
 
     /**
      * Helpers
@@ -41,7 +57,10 @@ const McaOne = () => {
             try {
                 const data = await getHeaders();
                 setAllColumns(data);
-                setSelectedColumns(data.slice(0, 3).map((col) => col.title));
+                // Ensure "ID" is always selected and at the beginning if it exists
+                const initialSelected = data.map(col => col.title).filter(title => title === "ID");
+                const otherSelected = data.slice(0, 3).map((col) => col.title).filter(title => title !== "ID");
+                setSelectedColumns([...new Set([...initialSelected, ...otherSelected])]); // Use Set to avoid duplicates
             } catch (err) {
                 console.error("Failed to fetch columns:", err);
             }
@@ -109,7 +128,10 @@ const McaOne = () => {
      */
     const handleAddColumn = async () => {
         const title = newColumn.trim();
-        if (!title || allColumns.some((c) => c.title.toLowerCase() === title.toLowerCase())) return;
+        if (!title || allColumns.some((c) => c.title.toLowerCase() === title.toLowerCase())) {
+            alert("Column name cannot be empty or a duplicate.");
+            return;
+        }
 
         try {
             const result = await addHeader(title);
@@ -117,12 +139,14 @@ const McaOne = () => {
             setStudents((prev) =>
                 prev.map((student) => ({
                     ...student,
-                    [title]: "",
+                    [title]: "", // Initialize new column for existing students
                 }))
             );
             setNewColumn("");
+            setSelectedColumns((prev) => [...prev, title]); // Auto-select new column
         } catch (err) {
             console.error("Failed to add column:", err);
+            alert("Failed to add column.");
         }
     };
 
@@ -130,8 +154,14 @@ const McaOne = () => {
      * Add blank student row
      */
     const handleAddStudent = async () => {
-        const newId = students.length ? Math.max(...students.map((s) => s.ID || 0)) + 1 : 1;
-        const newStudent = { ID: newId };
+        // Determine the next ID based on existing students' IDs
+        const currentMaxId = students.reduce((max, student) => {
+            const id = parseInt(student.ID, 10);
+            return !isNaN(id) ? Math.max(max, id) : max;
+        }, 0);
+
+        const newId = currentMaxId + 1;
+        const newStudent = { ID: newId.toString() }; // Ensure ID is a string for consistency
         allColumns.forEach((col) => {
             if (col.title !== "ID") newStudent[col.title] = "";
         });
@@ -143,6 +173,143 @@ const McaOne = () => {
             console.error("Failed to add student:", err);
         }
     };
+
+
+    /**
+     * Column Action Modal Handlers
+     */
+    const handleOpenModal = (column) => {
+        setSelectedColumnForAction(column);
+        setRenameInputValue(column.title); // Initialize rename input with current title
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedColumnForAction(null);
+        setRenameInputValue("");
+    };
+
+    const handleRenameColumn = async () => {
+        if (!selectedColumnForAction || !renameInputValue.trim()) {
+            alert("New column name cannot be empty.");
+            return;
+        }
+        const oldTitle = selectedColumnForAction.title;
+        const newTitle = renameInputValue.trim();
+
+        if (oldTitle === newTitle) {
+            handleCloseModal(); // No change, just close
+            return;
+        }
+
+        if (allColumns.some(col => col.title.toLowerCase() === newTitle.toLowerCase() && col._id !== selectedColumnForAction._id)) {
+            alert("A column with this name already exists.");
+            return;
+        }
+
+        try {
+            await updateHeader(selectedColumnForAction._id, newTitle);
+
+            // Update allColumns state
+            setAllColumns(prev => prev.map(col =>
+                col._id === selectedColumnForAction._id ? { ...col, title: newTitle } : col
+            ));
+
+            // Update students data to reflect the new column title (key)
+            setStudents(prev => prev.map(student => {
+                const newStudent = { ...student };
+                if (newStudent.hasOwnProperty(oldTitle)) {
+                    newStudent[newTitle] = newStudent[oldTitle];
+                    delete newStudent[oldTitle];
+                }
+                return newStudent;
+            }));
+
+            // Update selectedColumns state
+            setSelectedColumns(prev => prev.map(title =>
+                title === oldTitle ? newTitle : title
+            ));
+
+            alert(`Column "${oldTitle}" renamed to "${newTitle}" successfully!`);
+            handleCloseModal();
+        } catch (error) {
+            console.error("Error renaming column:", error);
+            alert(`Failed to rename column: ${error.message}`);
+        }
+    };
+
+    const handleDeleteColumn = async () => {
+        if (!selectedColumnForAction) return;
+
+        if (selectedColumnForAction.title === "ID") {
+            alert("The 'ID' column cannot be deleted.");
+            return;
+        }
+
+        if (!window.confirm(`Are you sure you want to delete the column "${selectedColumnForAction.title}" and all its data?`)) {
+            return;
+        }
+
+        try {
+            await deleteHeader(selectedColumnForAction._id);
+
+            // Remove column from allColumns
+            setAllColumns(prev => prev.filter(col => col._id !== selectedColumnForAction._id));
+
+            // Remove data for this column from all students
+            const columnToDelete = selectedColumnForAction.title;
+            setStudents(prev => prev.map(student => {
+                const newStudent = { ...student };
+                delete newStudent[columnToDelete];
+                return newStudent;
+            }));
+
+            // Remove column from selectedColumns if it was selected
+            setSelectedColumns(prev => prev.filter(title => title !== columnToDelete));
+
+            alert(`Column "${columnToDelete}" deleted successfully.`);
+            handleCloseModal();
+        } catch (error) {
+            console.error("Error deleting column:", error);
+            alert(`Failed to delete column: ${error.message}`);
+        }
+    };
+
+    /**
+     * Long Press Event Handlers for Table Headers
+     */
+    const handlePressStart = (column) => {
+        // Clear any existing timer to prevent multiple modals
+        clearTimeout(longPressTimer.current);
+        // Start a new timer
+        longPressTimer.current = setTimeout(() => {
+            // Open modal only if the column is not 'ID'
+            if (column.title !== "ID") {
+                handleOpenModal(column);
+            } else {
+                alert("The 'ID' column cannot be renamed or deleted.");
+            }
+        }, LONG_PRESS_DURATION);
+    };
+
+    const handlePressEnd = () => {
+        // Clear the timer whether it completed or not
+        clearTimeout(longPressTimer.current);
+    };
+
+    // Clear timer if mouse leaves the element
+    const handleMouseLeave = () => {
+        clearTimeout(longPressTimer.current);
+    };
+
+    // Cleanup on component unmount
+    useEffect(() => {
+        return () => {
+            clearTimeout(longPressTimer.current);
+        };
+    }, []);
+
 
     return (
         <section id="mcaone"> {/* Changed section ID from mcatwo */}
@@ -301,7 +468,15 @@ const McaOne = () => {
                                             className={
                                                 idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""
                                             }
+                                            // Long press event handlers
+                                            onMouseDown={() => handlePressStart(col)}
+                                            onMouseUp={handlePressEnd}
+                                            onMouseLeave={handleMouseLeave}
+                                            onTouchStart={() => handlePressStart(col)}
+                                            onTouchEnd={handlePressEnd}
+                                            style={{ cursor: col.title === "ID" ? "default" : "pointer" }} // Change cursor for editable columns
                                         >
+
                                             {col.title}
                                         </th>
                                     ))}
@@ -350,6 +525,18 @@ const McaOne = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Column Action Modal */}
+            {isModalOpen && selectedColumnForAction && (
+                <ColumnActionModal
+                    column={selectedColumnForAction}
+                    onClose={handleCloseModal}
+                    onRename={handleRenameColumn}
+                    onDelete={handleDeleteColumn}
+                    renameInputValue={renameInputValue}
+                    onRenameInputChange={setRenameInputValue}
+                />
+            )}
         </section>
     );
 };
