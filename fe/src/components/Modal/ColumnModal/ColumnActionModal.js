@@ -1,4 +1,3 @@
-import React from "react";
 import "./BrowserRouter.css"; // ensure styles are applied
 
 const ColumnActionModal = ({

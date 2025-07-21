@@ -7,7 +7,7 @@
     
     .row .btn:active, .row .btn:hover {
         background-color: var(--clr-two-dark);
-
+        color: #fff;
     }
 
     .search_input::placeholder{

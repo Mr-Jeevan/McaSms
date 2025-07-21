@@ -146,7 +146,7 @@ const McaTwo = () => {
   return (
     <section id="mcatwo">
       <div className="container mt-5">
-        <h1>MCA Management System</h1>
+        <h1>MCA II Management System</h1>
 
         {/* Accordion for actions */}
         <div
@@ -178,7 +178,7 @@ const McaTwo = () => {
                         value={newColumn}
                         onChange={(e) => setNewColumn(e.target.value)}
                       />
-                      <button className="btn bg-Two text-white" onClick={handleAddColumn}>
+                      <button className="btn bg-one text-white" onClick={handleAddColumn}>
                         Add Column
                       </button>
                     </div>
@@ -188,7 +188,7 @@ const McaTwo = () => {
                   <div className="col-md-6 mb-3">
                     <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                       <button
-                        className="btn bg-Two text-white"
+                        className="btn bg-one text-white"
                         onClick={() =>
                           exportFilteredToExcel(
                             displayedStudents,
@@ -335,11 +335,10 @@ const McaTwo = () => {
                               }));
                             }}
                           />
-                        ) : idx === 0 ? (
-                          i + 1
                         ) : (
                           student[col.title] ?? ""
                         )}
+
                       </td>
                     ))}
                   </tr>
