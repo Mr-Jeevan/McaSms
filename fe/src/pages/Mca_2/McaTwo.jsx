@@ -495,11 +495,11 @@ const McaTwo = () => {
               />
               {/* New dropdown for filtering by column*/}
               <select
-                className="form-select border-0 glass_card text-dark ms-2"
+                className="form-select border-0 glass_card text-light ms-2 "
                 value={filterColumnTitle}
                 onChange={(e) => setFilterColumnTitle(e.target.value)}
               >
-                <option value="All Columns">Search All Columns</option>
+                <option className="form-input" value="All Columns">Search All Columns</option>
                 {allColumns.map(col => (
                   <option key={col._id} value={col.title}>{col.title}</option>
                 ))}
