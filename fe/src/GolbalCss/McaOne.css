@@ -1,15 +1,10 @@
-<<<<<<< HEAD
 #mcaone{
-=======
-#mcatwo{
->>>>>>> 1130ee0faa482088e0e4d909034b0d2aa425b13d
     
     .accordion-button:focus, .accordion-button:enabled {
         background-color: var(--clr-four);
     }
 
     
-<<<<<<< HEAD
 <<<<<<<< HEAD:fe/src/GolbalCss/McaTwo.css
     .table-responsive {
         max-height: 100vh;
@@ -18,11 +13,6 @@
     .row .btn:active, .row .btn:hover {
         background-color: var(--clr-two-dark);
 
-=======
-    .row .btn:active, .row .btn:hover {
-        background-color: var(--clr-two-dark);
-        color: #fff;
->>>>>>> 1130ee0faa482088e0e4d909034b0d2aa425b13d
     }
 
     .search_input::placeholder{
@@ -32,10 +22,7 @@
     .table-responsive {
         max-height: 100vh;
 
-<<<<<<< HEAD
 >>>>>>>> 1130ee0faa482088e0e4d909034b0d2aa425b13d:fe/src/GolbalCss/McaOne.css
-=======
->>>>>>> 1130ee0faa482088e0e4d909034b0d2aa425b13d
     }
     
     thead .head{

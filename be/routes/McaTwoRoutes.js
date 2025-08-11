@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD:be/routes/studentRoutes.js
 const studentService = require('../services/studentService');
+=======
+const Student = require('../models/mcaTwoStudents');
+>>>>>>> 1130ee0faa482088e0e4d909034b0d2aa425b13d:be/routes/McaTwoRoutes.js
 
 // GET all students
 router.get('/', async (req, res) => {

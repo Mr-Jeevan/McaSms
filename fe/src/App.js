@@ -3,12 +3,12 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage/LandingPage';
 import Login from './pages/Login/Login'
-// import Sidebar from './components/layout/sidebar';
 import Header from '../src/layout/header';
 import Home from '../src/pages/Home/Home';
 import McaTwo from '../src/pages/Mca_2/McaTwo';
-import Edit from '../src/pages/Editpage/Edit';
-import AddStudents from '../src/pages/addStudents/AddStudents';
+import McaOne from './pages/Mca_1/McaOne';
+// import Edit from '../src/pages/Editpage/Edit';
+// import AddStudents from '../src/pages/addStudents/AddStudents';
 
 import ParticlePage from './components/ParticlesBackground/ParticlePage';
 
@@ -36,11 +36,9 @@ function App() {
             <Route path="/login" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/home" element={isLoggedIn ? <Home /> : <Navigate to="/" />} />
             <Route path="/McaTwo" element={isLoggedIn ? <McaTwo /> : <Navigate to="/" />} />
-            <Route path='/EditableTable' element={<EditableTable />} />
-            <Route path="/edit/:id" element={<Edit />} />
-            <Route path="/AddStudents" element={<AddStudents />} />
-            <Route path="/ParticlePage" element={<ParticlePage />} />
+            <Route path="/McaOne" element={isLoggedIn ? <McaOne /> : <Navigate to="/" />} />
             {/* Add more routes as needed */}
+            <Route path="/ParticlePage" element={<ParticlePage />} />
           </Routes>
         </div>
       </div>

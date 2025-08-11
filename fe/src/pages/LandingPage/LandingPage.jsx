@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import './LandingPage.css'
-import "@fontsource/k2d"; 
+import "@fontsource/k2d";
 
 
 // import "./ImageSlider.scss";
@@ -63,22 +63,25 @@ while (alive) {
                 </nav>
             </div>
 
-            <div className="banner container my-5">
+            <div className="banner container my-5 ">
                 <div className="heading">
                     <h1 className="text-center">MCA STUDENTS DETAILS</h1>
                 </div>
-                <div className="banner_content">
-                    <div className="row">
-                        <div className="col-6">
-                            <p>Our department’s Student Management System is designed exclusively for staff, streamlining the way you organize, access, and export student data. Categorize students year-wise for clear, structured management. Instantly view comprehensive student profiles, attendance records, and academic performance, all in one place.</p>
+                <div class="container-fluid py-5 my-5 ">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class=" lead lh-base mb-4">
+                                Our department’s Student Management System is designed exclusively for staff, streamlining the way you organize, access, and export student data. Categorize students year-wise for clear, structured management. Instantly view comprehensive student profiles, attendance records, and academic performance, all in one place.
+                            </p>
                         </div>
-                        <div className="col-6">
-                            <img className='img-fluid' src={banner_1} alt="" />
+                        <div class="col-md-6">
+                            <img class="img-fluid rounded shadow" src={banner_1} alt="Student Management Banner" />
                         </div>
                     </div>
                 </div>
             </div>
 
+            {/* slider */}
             <div className="slider my-5 py-3">
                 <div className="slider_content">
                     <div className="smooth-scroller">
@@ -94,7 +97,7 @@ while (alive) {
             <div className="login_btn my-5 py-3">
                 <div className="d-flex justify-content-center ">
                     <Link to="/login">
-                    <button className='btn px-4'>LOGIN</button>
+                        <button className='btn px-4'>LOGIN</button>
                     </Link>
                 </div>
             </div>
@@ -121,8 +124,8 @@ while (alive) {
             <footer>
                 <div className="content">
                     <div className="d-flex justify-content-between">
-                            <h2>SMS</h2>
-                            <p className='txt-disabled'>Copyright @2025</p>
+                        <h2>SMS</h2>
+                        <p className='txt-disabled'>Copyright @2025</p>
                     </div>
                 </div>
             </footer>

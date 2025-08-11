@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node server.js",
     "devstart": "nodemon server.js",
     "setup": "node scripts/setup-firebase.js",
@@ -11,6 +12,10 @@
     "init-db": "node scripts/init-database.js",
     "test-firebase": "node tests/test-firebase-direct.js",
     "organize": "node scripts/organize-project.js"
+=======
+    "start": "nodemon server.js",
+    "devstart": "nodemon server.js"
+>>>>>>> 1130ee0faa482088e0e4d909034b0d2aa425b13d
   },
   "keywords": [],
   "author": "",

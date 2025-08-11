@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # McaSms Backend API
 
 A comprehensive Node.js backend API for the McaSms application using Firebase Firestore as the database. This API provides endpoints for managing student data and dynamic column headers with a robust, scalable architecture.
@@ -273,3 +274,6 @@ For issues or questions:
 2. Review Firebase Console for project status
 3. Test connections using provided scripts
 4. Check server logs for detailed error messages
+=======
+
+>>>>>>> 1130ee0faa482088e0e4d909034b0d2aa425b13d

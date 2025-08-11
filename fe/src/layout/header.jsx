@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import "./header.css";
+import "../GolbalCss/header.css"; 
 function Header({ setIsLoggedIn }) {
     const [iconChange, seticonChange] = useState(false);
     const navigate = useNavigate()
@@ -64,11 +64,11 @@ function Header({ setIsLoggedIn }) {
                         <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                             <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
                                 <li className="nav-item active">
-                                    <Link className="nav-link" to="/home">Home</Link>
+                                    <Link className="nav-link text-white" to="/home">Home</Link>
                                 </li>
                                 <li className="nav-item dropdown">
                                     <button
-                                        className="nav-link dropdown-toggle btn btn-link"
+                                        className="nav-link dropdown-toggle btn btn-link text-white"
                                         id="navbarDropdown"
                                         type="button"
                                         data-bs-toggle="dropdown"
@@ -78,12 +78,12 @@ function Header({ setIsLoggedIn }) {
                                     </button>
 
                                     <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <Link className="dropdown-item" to="/LongPress">MCA I</Link>
+                                        <Link className="dropdown-item" to="/McaOne">MCA I</Link>
                                         <Link className="dropdown-item" to="/McaTwo">MCA II</Link>
                                     </div>
                                 </li>
                                 <li className="nav-item">
-                                    <button onClick={logout} className=" btn btn-outline-danger rounded bg-one ">
+                                    <button onClick={logout} className=" btn btn-outline-danger rounded bg-one fw-bold ">
                                         Log-Out
                                     </button>
                                 </li>
