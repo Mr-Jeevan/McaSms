@@ -24,14 +24,10 @@ app.use(express.json()); // Essential for parsing JSON request bodies
 app.use(express.urlencoded({ extended: true })); // For parsing URL-encoded request bodies
 
 // MongoDB Connection
-mongoose
-  // Use process.env.MONGO_URI for your database connection string
-  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/srms', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+const connectDB = require('./config/db');
+
+// Connect to Database
+connectDB();
 
 // --- Mount API Routes using the Generic CRUD Router ---
 
