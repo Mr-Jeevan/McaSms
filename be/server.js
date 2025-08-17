@@ -58,7 +58,7 @@ app.use((err, req, res, next) => {
 });
 
 // Port definition, using environment variable or default
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
