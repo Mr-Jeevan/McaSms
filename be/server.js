@@ -7,8 +7,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Import your Mongoose Models
-// Ensure these import paths and model names match your actual files and exports
 const McaOneStudent = require('./models/mcaOneStudents'); // Assuming McaOneStudent.js exports a model named 'McaOneStudent'
+const authRoutes = require('./routes/authRoutes');
 const McaTwoStudent = require('./models/mcaTwoStudents'); // Assuming McaTwoStudent.js exports a model named 'McaTwoStudent'
 
 const headerRoutes = require('./routes/headerRoutes');
@@ -29,19 +29,18 @@ const connectDB = require('./config/db');
 // Connect to Database
 connectDB();
 
-// --- Mount API Routes using the Generic CRUD Router ---
+// Authentication routes
+// Accessible at http://localhost:4000/api/auth
+app.use('/api/auth', authRoutes);
 
+// --- Mount API Routes using the Generic CRUD Router ---
 // Routes for MCA One Students
-// Accessible at http://localhost:3001/api/mcaone/students
 app.use('/api/mcaone/students', createCrudRouter(McaOneStudent));
 
 // Routes for MCA Two Students
-// Accessible at http://localhost:3001/api/mcatwo/students
 app.use('/api/mcatwo/students', createCrudRouter(McaTwoStudent));
 
-// Routes for Headers (ensure your frontend uses /api/headers for consistency)
-// Accessible at http://localhost:3001/api/headers
-// REMINDER: In crudRouter.js, ensure 'isHeaderModel' correctly checks 'Model.modelName === 'Header''
+// REMINDER: In crudRouter.js, ensure 'isHeaderModel' correctly checks 'Model.modelName === 'Header'
 // or whatever the actual model name for 'Header' is (e.g., 'McaTwoHeader').
 app.use('/api/headers', headerRoutes); // Changed /api/header to /api/headers
 
