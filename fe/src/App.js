@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage/LandingPage';
+import Register from './pages/Register/Register';
 import Login from './pages/Login/Login'
 import Header from '../src/layout/header';
 import Home from '../src/pages/Home/Home';
@@ -33,6 +34,7 @@ function App() {
           {/* <Header setIsLoggedIn={setIsLoggedIn} /> */}
           <Routes>
             <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <LandingPage setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/register" element={isLoggedIn ? <Navigate to="/home" replace /> : <Register setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/login" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/home" element={isLoggedIn ? <Home /> : <Navigate to="/" />} />
             <Route path="/McaTwo" element={isLoggedIn ? <McaTwo /> : <Navigate to="/" />} />
