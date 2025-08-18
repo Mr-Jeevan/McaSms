@@ -17,29 +17,27 @@ import EditableTable from './components/utils-tries/EditableTable';
 // import LongPress from './components/tries/LongPress'
 
 function App() {
-
   const location = useLocation();
-  //save login state after login
+
+  // CORRECTED: Check for the 'authToken' to determine login state
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem("isLoggedIn") === "true";
+    return !!localStorage.getItem("authToken"); // '!!' converts the string/null to a boolean
   });
 
-  const isAuthPage = ['/', '/login'].includes(location.pathname.toLowerCase());
+  const isAuthPage = ['/', '/login', '/register'].includes(location.pathname.toLowerCase());
   return (
 
     <div className="App">
       <div className="d-flex" id="wrapper">
         <div className=' w-100' id="page-content-wrapper" >
           {isLoggedIn && !isAuthPage && <Header setIsLoggedIn={setIsLoggedIn} />}
-          {/* <Header setIsLoggedIn={setIsLoggedIn} /> */}
           <Routes>
-            <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <LandingPage setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/register" element={isLoggedIn ? <Navigate to="/home" replace /> : <Register setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <LandingPage />} />
+            <Route path="/register" element={isLoggedIn ? <Navigate to="/home" replace /> : <Register />} />
             <Route path="/login" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/home" element={isLoggedIn ? <Home /> : <Navigate to="/" />} />
             <Route path="/McaTwo" element={isLoggedIn ? <McaTwo /> : <Navigate to="/" />} />
             <Route path="/McaOne" element={isLoggedIn ? <McaOne /> : <Navigate to="/" />} />
-            {/* Add more routes as needed */}
             <Route path="/ParticlePage" element={<ParticlePage />} />
           </Routes>
         </div>

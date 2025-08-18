@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import './LandingPage.css'
+import '../../GolbalCss/LandingPage.css'
 import "@fontsource/k2d";
 
 
@@ -53,7 +53,7 @@ while (alive) {
             <div>
                 <nav className="navbar header">
                     <div className="container-fluid mx-5">
-                        <span className="navbar-brand">SMS</span>
+                        <span className="navbar-brand text-light">SMS</span>
                         <form className="d-flex" >
                             <Link to="/login">
                                 <button className="btn px-5 rounded-2" type="submit">LOGIN</button>

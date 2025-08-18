@@ -1,48 +1,42 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import "../GolbalCss/header.css"; 
+import { Link, useNavigate } from "react-router-dom";
+import "../GolbalCss/header.css";
+
 function Header({ setIsLoggedIn }) {
     const [iconChange, seticonChange] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-
-
+    // This function can be kept if it's used for other UI elements
     const iconChangeForSlider = () => {
-        if (iconChange) {
-            seticonChange(false);
-        } else {
-            seticonChange(true);
-
-        }
+        seticonChange(!iconChange);
     }
 
+    // This function seems related to a sidebar, can be kept as is
     const sideBarHideShow = (event) => {
         const sidebarToggle = document.body.querySelector('#sidebarToggle');
         if (sidebarToggle) {
-            // Uncomment Below to persist sidebar toggle between refreshes
-            // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-            //     document.body.classList.toggle('sb-sidenav-toggled');
-            // }
-            // sidebarToggle.addEventListener('click', event => {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
-
             localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-            // });
         }
     }
+
+    // --- CORRECTED LOGOUT LOGIC ---
     const logout = () => {
-        localStorage.removeItem("isLoggedIn");
+        // 1. Remove the correct item from localStorage
+        localStorage.removeItem("authToken");
+
+        // 2. Update the application's state
         setIsLoggedIn(false);
+
+        // 3. Navigate the user to the landing/login page
         navigate('/');
     };
 
     return (
         <>
             <section id="header">
-
-                <nav className="navbar p-1 navbar-expand-lg border-bottom fixed-top mb-5  ">
+                <nav className="navbar p-1 navbar-expand-lg border-bottom fixed-top mb-5">
                     <div className="container-fluid d-flex align-items-center justify-content-between">
 
                         {/* LEFT: Logo */}
@@ -76,24 +70,20 @@ function Header({ setIsLoggedIn }) {
                                     >
                                         Class
                                     </button>
-
                                     <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <Link className="dropdown-item" to="/McaOne">MCA I</Link>
                                         <Link className="dropdown-item" to="/McaTwo">MCA II</Link>
                                     </div>
                                 </li>
                                 <li className="nav-item">
-                                    <button onClick={logout} className=" btn btn-outline-danger rounded bg-one fw-bold ">
+                                    <button onClick={logout} className="btn btn-outline-danger rounded bg-one fw-bold">
                                         Log-Out
                                     </button>
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                 </nav>
-
-
             </section>
         </>
     )

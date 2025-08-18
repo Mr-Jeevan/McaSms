@@ -1,4 +1,4 @@
-#login {
+#auth {
     /* background-size: 100% 100%;
     background-position: 0px 0px, 0px 0px;
     background-image: radial-gradient(75% 75% at -1% 100%, #FF02DD30 1%, #073AFF00 100%), conic-gradient(from 0deg at 50% 50%, #330040FF 0%, #240030FF 100%); */
@@ -31,8 +31,12 @@
         outline: none;
         box-shadow: none;
         border: 1px solid #af24ff;
+        background: #000000;
     }
 
+    input::placeholder{
+        color: #ffffff;
+    }
     .btn:focus,
     .btn:hover {
         background: var(--clr-two-dark);

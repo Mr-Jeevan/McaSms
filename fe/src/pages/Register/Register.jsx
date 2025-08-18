@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../../services/apiService'; // Adjust path
 import "../../GolbalCss/index.css";
-// import "./login.css"; // Assuming shared styles with login
+import "../../GolbalCss/login.css";
 
 import ParticlePage from '../../components/ParticlesBackground/ParticlePage';
 
@@ -40,7 +40,7 @@ const Register = () => {
 
     return (
         <ParticlePage>
-            <section id='register'>
+            <section id='auth'>
                 <div className="container">
                     <div className="contents d-flex justify-content-center align-items-center vh-100">
                         <div className="row">
