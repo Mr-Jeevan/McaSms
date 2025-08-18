@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../../services/apiService'; // Adjust path
 import "../../GolbalCss/index.css";
-import "../../GolbalCss/login.css";
+import "../../GolbalCss/auth.css";
 
 import ParticlePage from '../../components/ParticlesBackground/ParticlePage';
 
@@ -61,7 +61,7 @@ const Register = () => {
                                                     type="text"
                                                     name="username"
                                                     placeholder="Username"
-                                                    className="form-control transparent_input rounded"
+                                                    className="form-control text-light transparent_input rounded"
                                                     value={username}
                                                     onChange={(e) => setUsername(e.target.value)}
                                                     required
@@ -72,7 +72,7 @@ const Register = () => {
                                                     type="email"
                                                     name="email"
                                                     placeholder="Email"
-                                                    className="form-control transparent_input rounded"
+                                                    className="form-control text-light transparent_input rounded"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required

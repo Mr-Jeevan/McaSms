@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from '../../services/apiService'; // Adjust path
 import "../../GolbalCss/index.css";
-import "../../GolbalCss/login.css";
+import "../../GolbalCss/auth.css";
 
 import ParticlePage from '../../components/ParticlesBackground/ParticlePage';
 
@@ -64,7 +64,7 @@ const Login = ({ setIsLoggedIn }) => {
                                                     type="email"
                                                     name="email"
                                                     placeholder="Email"
-                                                    className="form-control transparent_input rounded"
+                                                    className="form-control text-light transparent_input rounded"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required
@@ -75,14 +75,14 @@ const Login = ({ setIsLoggedIn }) => {
                                                     type="password"
                                                     name="password"
                                                     placeholder="Password"
-                                                    className="form-control transparent_input rounded"
+                                                    className="form-control text-light transparent_input rounded"
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
                                                     required
                                                 />
                                             </div>
                                             <div className="text-center">
-                                                <button type="submit" className="btn bg-two w-50 form-control">Lemme In</button>
+                                                <button type="submit" className="btn bg-two w-50 text-light form-control">Lemme In</button>
                                             </div>
                                         </form>
                                         <div className="mt-3 text-center">
