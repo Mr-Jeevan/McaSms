@@ -3,6 +3,7 @@ import { exportToExcel, exportFilteredToExcel } from "../utils/ExportToExcel";
 import { getHeaders, addHeader, updateHeader, deleteHeader } from "../services/apiService";
 
 import ColumnActionModal from "../components/Modal/ColumnModal/ColumnActionModal";
+import StudentActionModal from "../components/Modal/StudentModal/StudentActionModal"; // Import the student modal
 import ActionsAccordion from "../components/ActionsAccordion";
 import ControlBar from "../components/ControlBar";
 import StudentTable from "../components/StudentTable";
@@ -11,19 +12,24 @@ import StudentTable from "../components/StudentTable";
 const StudentDataPage = ({ title, api }) => {
   const [students, setStudents] = useState([]);
   const [allColumns, setAllColumns] = useState([]);
-  const [selectedColumns, setSelectedColumns] = useState([]);
+  const [columnsForExport, setColumnsForExport] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [newColumn, setNewColumn] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editedCell, setEditedCell] = useState({});
   const [filterColumnTitle, setFilterColumnTitle] = useState("All Columns");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
   const [selectedColumnForAction, setSelectedColumnForAction] = useState(null);
   const [renameInputValue, setRenameInputValue] = useState("");
   const longPressTimer = useRef(null);
   const LONG_PRESS_DURATION = 700;
   const [titleToIdMap, setTitleToIdMap] = useState(new Map());
   const [idToTitleMap, setIdToTitleMap] = useState(new Map());
+
+  // State for the student delete modal
+  const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState(null);
+
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -38,9 +44,8 @@ const StudentDataPage = ({ title, api }) => {
         setAllColumns(headerData);
         setStudents(studentData.map(s => ({ _id: s._id, data: s.data || {} })));
 
-        // --- FIX: Select the first 3 columns by default ---
-        const initialSelected = headerData.slice(0, 3).map((col) => col.title);
-        setSelectedColumns(initialSelected);
+        const initialExportSelection = headerData.slice(0, 3).map((col) => col.title);
+        setColumnsForExport(initialExportSelection);
       } catch (err) {
         console.error("Failed to load initial data:", err);
       }
@@ -48,7 +53,6 @@ const StudentDataPage = ({ title, api }) => {
     fetchInitialData();
   }, [api]);
 
-  // Cleanup timer on component unmount
   useEffect(() => {
     return () => clearTimeout(longPressTimer.current);
   }, []);
@@ -97,19 +101,18 @@ const StudentDataPage = ({ title, api }) => {
       setTitleToIdMap(prev => new Map(prev).set(result.title, result._id));
       setIdToTitleMap(prev => new Map(prev).set(result._id, result.title));
       
-      // Initialize the new column for all existing students
       setStudents((prevStudents) =>
         prevStudents.map((student) => ({
           ...student,
           data: {
             ...(student.data || {}),
-            [result._id]: "", // Add the new column with an empty value
+            [result._id]: "",
           },
         }))
       );
 
       setNewColumn("");
-      setSelectedColumns((prev) => [...prev, result.title]);
+      setColumnsForExport((prev) => [...prev, result.title]);
     } catch (err) {
       console.error("Failed to add column:", err);
     }
@@ -136,15 +139,57 @@ const StudentDataPage = ({ title, api }) => {
     }));
   };
 
-  // --- MODAL AND LONG PRESS HANDLERS ---
-  const handleOpenModal = (column) => {
-    setSelectedColumnForAction(column);
-    setRenameInputValue(column.title);
-    setIsModalOpen(true);
+  const handleExport = (filtered = false) => {
+    const dataToExport = displayedStudents.map(student => {
+      const exportedStudent = {};
+      const columnsToUse = filtered ? allColumns.filter(c => columnsForExport.includes(c.title)) : allColumns;
+      
+      columnsToUse.forEach(col => {
+        exportedStudent[col.title] = student.data[col._id] || "";
+      });
+      return exportedStudent;
+    });
+
+    const headers = filtered ? columnsForExport : allColumns.map(c => c.title);
+    const filename = `${title.replace(/\s/g, '_')}_${filtered ? 'selected' : 'all'}.xlsx`;
+
+    if (filtered) {
+      exportFilteredToExcel(dataToExport, filename, headers);
+    } else {
+      exportToExcel(dataToExport, filename);
+    }
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  // --- STUDENT DELETE LOGIC ---
+  const openStudentDeleteModal = (student) => {
+    setStudentToDelete(student);
+    setIsStudentModalOpen(true);
+  };
+
+  const closeStudentDeleteModal = () => {
+    setStudentToDelete(null);
+    setIsStudentModalOpen(false);
+  };
+
+  const handleDeleteStudent = async (studentId) => {
+    try {
+      await api.deleteStudent(studentId);
+      setStudents(prev => prev.filter(s => s._id !== studentId));
+    } catch (error) {
+      console.error("Failed to delete student:", error);
+      alert("Failed to delete student.");
+    }
+  };
+
+  // --- COLUMN MODAL AND LONG PRESS HANDLERS ---
+  const handleOpenColumnModal = (column) => {
+    setSelectedColumnForAction(column);
+    setRenameInputValue(column.title);
+    setIsColumnModalOpen(true);
+  };
+
+  const handleCloseColumnModal = () => {
+    setIsColumnModalOpen(false);
     setSelectedColumnForAction(null);
     setRenameInputValue("");
   };
@@ -165,8 +210,8 @@ const StudentDataPage = ({ title, api }) => {
         return newMap;
       });
       setIdToTitleMap(prev => new Map(prev).set(columnId, newTitle));
-      setSelectedColumns(prev => prev.map(title => title === oldTitle ? newTitle : title));
-      handleCloseModal();
+      setColumnsForExport(prev => prev.map(title => title === oldTitle ? newTitle : title));
+      handleCloseColumnModal();
     } catch (error) {
       console.error("Error renaming column:", error);
     }
@@ -197,8 +242,8 @@ const StudentDataPage = ({ title, api }) => {
         delete newStudentData[columnToDeleteId];
         return { ...student, data: newStudentData };
       }));
-      setSelectedColumns(prev => prev.filter(title => title !== columnToDeleteTitle));
-      handleCloseModal();
+      setColumnsForExport(prev => prev.filter(title => title !== columnToDeleteTitle));
+      handleCloseColumnModal();
     } catch (error) {
       console.error("Error deleting column:", error);
     }
@@ -207,7 +252,7 @@ const StudentDataPage = ({ title, api }) => {
   const handlePressStart = (column) => {
     clearTimeout(longPressTimer.current);
     longPressTimer.current = setTimeout(() => {
-      if (column.title !== "ID") handleOpenModal(column);
+      if (column.title !== "ID") handleOpenColumnModal(column);
     }, LONG_PRESS_DURATION);
   };
 
@@ -222,12 +267,11 @@ const StudentDataPage = ({ title, api }) => {
             newColumn={newColumn}
             onNewColumnChange={(e) => setNewColumn(e.target.value)}
             onAddColumn={handleAddColumn}
-            // Add export handlers here if needed
-            onExportFiltered={() => {}}
-            onExportAll={() => {}}
+            onExportFiltered={() => handleExport(true)}
+            onExportAll={() => handleExport(false)}
             allColumns={allColumns}
-            selectedColumns={selectedColumns}
-            onCheckboxChange={(title) => setSelectedColumns(prev => prev.includes(title) ? prev.filter(t => t !== title) : [...prev, title])}
+            selectedColumns={columnsForExport}
+            onCheckboxChange={(title) => setColumnsForExport(prev => prev.includes(title) ? prev.filter(t => t !== title) : [...prev, title])}
         />
         <ControlBar
             searchTerm={searchTerm}
@@ -241,23 +285,31 @@ const StudentDataPage = ({ title, api }) => {
         />
         <StudentTable
             students={displayedStudents}
-            columns={allColumns.filter(c => selectedColumns.includes(c.title))}
+            columns={allColumns}
             editMode={editMode}
             editedCell={editedCell}
             onCellChange={handleCellChange}
             onHeaderPressStart={handlePressStart}
             onHeaderPressEnd={handlePressEnd}
             onHeaderPressLeave={handlePressLeave}
+            onRowDoubleClick={openStudentDeleteModal} // Pass the handler to the table
         />
       </div>
-      {isModalOpen && selectedColumnForAction && (
+      {isColumnModalOpen && selectedColumnForAction && (
         <ColumnActionModal
           column={selectedColumnForAction}
-          onClose={handleCloseModal}
+          onClose={handleCloseColumnModal}
           onRename={handleRenameColumn}
           onDelete={handleDeleteColumn}
           renameInputValue={renameInputValue}
           onRenameInputChange={setRenameInputValue}
+        />
+      )}
+      {isStudentModalOpen && studentToDelete && (
+        <StudentActionModal
+          student={studentToDelete}
+          onClose={closeStudentDeleteModal}
+          onDelete={handleDeleteStudent}
         />
       )}
     </section>

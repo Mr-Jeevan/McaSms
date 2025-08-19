@@ -9,6 +9,7 @@ const StudentTable = ({
   onHeaderPressStart,
   onHeaderPressEnd,
   onHeaderPressLeave,
+  onRowDoubleClick, // New prop for handling double click
 }) => {
   return (
     <div className="overflow-auto table-responsive glass_card p-2 pt-2 rounded">
@@ -37,7 +38,7 @@ const StudentTable = ({
           </thead>
           <tbody>
             {students.map((student, i) => (
-              <tr key={student._id || i}>
+              <tr key={student._id || i} onDoubleClick={() => onRowDoubleClick(student)}>
                 {columns.map((col, idx) => (
                   <td
                     key={col._id}
