@@ -65,7 +65,7 @@ const ActionsAccordion = ({
                         const index = colIndex * Math.ceil(allColumns.length / 4) + rowIndex;
                         const col = allColumns[index];
                         return col ? (
-                          <td key={col._id} className="align-middle" onClick={() => onCheckboxChange(col.title)} style={{ cursor: "pointer" }}>
+                          <td key={col._id} className="align-middle" style={{ cursor: "pointer" }}>
                             <div className="form-check d-flex align-items-center gap-2">
                               <input
                                 type="checkbox"

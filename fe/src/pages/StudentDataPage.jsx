@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { exportToExcel, exportFilteredToExcel } from "../utils/ExportToExcel";
-import { getHeaders, addHeader, updateHeader, deleteHeader } from "../../services/apiService";
+import { getHeaders, addHeader, updateHeader, deleteHeader } from "../services/apiService";
 
-import ColumnActionModal from "../../components/Modal/ColumnModal/ColumnActionModal";
-import ActionsAccordion from "../../components/ActionsAccordion";
-import ControlBar from "../../components/ControlBar";
-import StudentTable from "../../components/StudentTable";
+import ColumnActionModal from "../components/Modal/ColumnModal/ColumnActionModal";
+import ActionsAccordion from "../components/ActionsAccordion";
+import ControlBar from "../components/ControlBar";
+import StudentTable from "../components/StudentTable";
 
 // This is the generic, reusable component
 const StudentDataPage = ({ title, api }) => {
@@ -23,6 +23,7 @@ const StudentDataPage = ({ title, api }) => {
   const longPressTimer = useRef(null);
   const LONG_PRESS_DURATION = 700;
   const [titleToIdMap, setTitleToIdMap] = useState(new Map());
+  const [idToTitleMap, setIdToTitleMap] = useState(new Map());
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -31,11 +32,14 @@ const StudentDataPage = ({ title, api }) => {
         const studentData = await api.getStudents();
         
         const newTitleToIdMap = new Map(headerData.map(col => [col.title, col._id]));
+        const newIdToTitleMap = new Map(headerData.map(col => [col._id, col.title]));
         setTitleToIdMap(newTitleToIdMap);
+        setIdToTitleMap(newIdToTitleMap);
         setAllColumns(headerData);
         setStudents(studentData.map(s => ({ _id: s._id, data: s.data || {} })));
 
-        const initialSelected = headerData.slice(0, 4).map((col) => col.title);
+        // --- FIX: Select the first 3 columns by default ---
+        const initialSelected = headerData.slice(0, 3).map((col) => col.title);
         setSelectedColumns(initialSelected);
       } catch (err) {
         console.error("Failed to load initial data:", err);
@@ -43,6 +47,11 @@ const StudentDataPage = ({ title, api }) => {
     };
     fetchInitialData();
   }, [api]);
+
+  // Cleanup timer on component unmount
+  useEffect(() => {
+    return () => clearTimeout(longPressTimer.current);
+  }, []);
 
   const displayedStudents = students.filter((student) => {
     if (!searchTerm) return true;
@@ -86,6 +95,19 @@ const StudentDataPage = ({ title, api }) => {
       const result = await addHeader(title);
       setAllColumns((prev) => [...prev, result]);
       setTitleToIdMap(prev => new Map(prev).set(result.title, result._id));
+      setIdToTitleMap(prev => new Map(prev).set(result._id, result.title));
+      
+      // Initialize the new column for all existing students
+      setStudents((prevStudents) =>
+        prevStudents.map((student) => ({
+          ...student,
+          data: {
+            ...(student.data || {}),
+            [result._id]: "", // Add the new column with an empty value
+          },
+        }))
+      );
+
       setNewColumn("");
       setSelectedColumns((prev) => [...prev, result.title]);
     } catch (err) {
@@ -103,9 +125,6 @@ const StudentDataPage = ({ title, api }) => {
       console.error("Failed to add student:", err);
     }
   };
-
-  // ... (Add other handlers like handleRenameColumn, handleDeleteColumn, long press, etc. here)
-  // These can be copied directly from your original McaTwo.jsx file as they are generic.
   
   const handleCellChange = (studentId, columnId, value) => {
     setEditedCell((prev) => ({
@@ -117,6 +136,84 @@ const StudentDataPage = ({ title, api }) => {
     }));
   };
 
+  // --- MODAL AND LONG PRESS HANDLERS ---
+  const handleOpenModal = (column) => {
+    setSelectedColumnForAction(column);
+    setRenameInputValue(column.title);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedColumnForAction(null);
+    setRenameInputValue("");
+  };
+
+  const handleRenameColumn = async () => {
+    if (!selectedColumnForAction || !renameInputValue.trim()) return;
+    const oldTitle = selectedColumnForAction.title;
+    const newTitle = renameInputValue.trim();
+    const columnId = selectedColumnForAction._id;
+
+    try {
+      await updateHeader(columnId, newTitle);
+      setAllColumns(prev => prev.map(col => col._id === columnId ? { ...col, title: newTitle } : col));
+      setTitleToIdMap(prev => {
+        const newMap = new Map(prev);
+        newMap.delete(oldTitle);
+        newMap.set(newTitle, columnId);
+        return newMap;
+      });
+      setIdToTitleMap(prev => new Map(prev).set(columnId, newTitle));
+      setSelectedColumns(prev => prev.map(title => title === oldTitle ? newTitle : title));
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error renaming column:", error);
+    }
+  };
+
+  const handleDeleteColumn = async () => {
+    if (!selectedColumnForAction || selectedColumnForAction.title === "ID") return;
+    if (!window.confirm(`Delete "${selectedColumnForAction.title}"?`)) return;
+
+    const columnToDeleteId = selectedColumnForAction._id;
+    const columnToDeleteTitle = selectedColumnForAction.title;
+
+    try {
+      await deleteHeader(columnToDeleteId);
+      setAllColumns(prev => prev.filter(col => col._id !== columnToDeleteId));
+      setTitleToIdMap(prev => {
+        const newMap = new Map(prev);
+        newMap.delete(columnToDeleteTitle);
+        return newMap;
+      });
+      setIdToTitleMap(prev => {
+        const newMap = new Map(prev);
+        newMap.delete(columnToDeleteId);
+        return newMap;
+      });
+      setStudents(prev => prev.map(student => {
+        const newStudentData = { ...student.data };
+        delete newStudentData[columnToDeleteId];
+        return { ...student, data: newStudentData };
+      }));
+      setSelectedColumns(prev => prev.filter(title => title !== columnToDeleteTitle));
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error deleting column:", error);
+    }
+  };
+
+  const handlePressStart = (column) => {
+    clearTimeout(longPressTimer.current);
+    longPressTimer.current = setTimeout(() => {
+      if (column.title !== "ID") handleOpenModal(column);
+    }, LONG_PRESS_DURATION);
+  };
+
+  const handlePressEnd = () => clearTimeout(longPressTimer.current);
+  const handlePressLeave = () => clearTimeout(longPressTimer.current);
+
   return (
     <section>
       <div className="container mt-5">
@@ -125,7 +222,9 @@ const StudentDataPage = ({ title, api }) => {
             newColumn={newColumn}
             onNewColumnChange={(e) => setNewColumn(e.target.value)}
             onAddColumn={handleAddColumn}
-            // Add export handlers
+            // Add export handlers here if needed
+            onExportFiltered={() => {}}
+            onExportAll={() => {}}
             allColumns={allColumns}
             selectedColumns={selectedColumns}
             onCheckboxChange={(title) => setSelectedColumns(prev => prev.includes(title) ? prev.filter(t => t !== title) : [...prev, title])}
@@ -146,10 +245,21 @@ const StudentDataPage = ({ title, api }) => {
             editMode={editMode}
             editedCell={editedCell}
             onCellChange={handleCellChange}
-            // Add long press handlers
+            onHeaderPressStart={handlePressStart}
+            onHeaderPressEnd={handlePressEnd}
+            onHeaderPressLeave={handlePressLeave}
         />
       </div>
-      {/* ... (Modal logic) */}
+      {isModalOpen && selectedColumnForAction && (
+        <ColumnActionModal
+          column={selectedColumnForAction}
+          onClose={handleCloseModal}
+          onRename={handleRenameColumn}
+          onDelete={handleDeleteColumn}
+          renameInputValue={renameInputValue}
+          onRenameInputChange={setRenameInputValue}
+        />
+      )}
     </section>
   );
 };
