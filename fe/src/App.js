@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage/LandingPage';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login'
 import Header from '../src/layout/header';
-import Home from '../src/pages/Home/Home';
+import Home from './pages/Home';
 import McaTwo from '../src/pages/Mca_2/McaTwo';
 import McaOne from './pages/Mca_1/McaOne';
 // import Edit from '../src/pages/Editpage/Edit';
@@ -19,22 +19,36 @@ import EditableTable from './components/utils-tries/EditableTable';
 function App() {
   const location = useLocation();
 
-  // CORRECTED: Check for the 'authToken' to determine login state
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return !!localStorage.getItem("authToken"); // '!!' converts the string/null to a boolean
-  });
+  // State for login status
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("authToken"));
+  
+  // State for the logged-in user's data
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // Effect to load user data from localStorage on initial load
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const isAuthPage = ['/', '/login', '/register'].includes(location.pathname.toLowerCase());
-  return (
 
+  return (
     <div className="App">
       <div className="d-flex" id="wrapper">
-        <div className=' w-100' id="page-content-wrapper" >
-          {isLoggedIn && !isAuthPage && <Header setIsLoggedIn={setIsLoggedIn} />}
+        <div className='w-100' id="page-content-wrapper">
+          {/* Pass both user and setIsLoggedIn to Header */}
+          {isLoggedIn && !isAuthPage && <Header setIsLoggedIn={setIsLoggedIn} user={currentUser} />}
+          
           <Routes>
             <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <LandingPage />} />
             <Route path="/register" element={isLoggedIn ? <Navigate to="/home" replace /> : <Register />} />
-            <Route path="/login" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
+            {/* Pass setCurrentUser to the Login component */}
+            <Route path="/login" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login setIsLoggedIn={setIsLoggedIn} setCurrentUser={setCurrentUser} />} />
+            
+            {/* Protected Routes */}
             <Route path="/home" element={isLoggedIn ? <Home /> : <Navigate to="/" />} />
             <Route path="/McaTwo" element={isLoggedIn ? <McaTwo /> : <Navigate to="/" />} />
             <Route path="/McaOne" element={isLoggedIn ? <McaOne /> : <Navigate to="/" />} />
@@ -43,7 +57,6 @@ function App() {
         </div>
       </div>
     </div>
-
   );
 }
 

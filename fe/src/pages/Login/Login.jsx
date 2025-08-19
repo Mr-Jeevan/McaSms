@@ -6,7 +6,8 @@ import "../../GolbalCss/auth.css";
 
 import ParticlePage from '../../components/ParticlesBackground/ParticlePage';
 
-const Login = ({ setIsLoggedIn }) => {
+// Accept setCurrentUser as a prop
+const Login = ({ setIsLoggedIn, setCurrentUser }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -30,11 +31,17 @@ const Login = ({ setIsLoggedIn }) => {
         }
 
         try {
-            // Use the centralized API service function
             const data = await loginUser({ email, password });
 
+            // 1. Store the token
             localStorage.setItem("authToken", data.token);
+            // 2. Store the user object as a JSON string
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            // 3. Update state in App.js
             setIsLoggedIn(true);
+            setCurrentUser(data.user);
+
             navigate('/home', { replace: true });
 
         } catch (err) {
@@ -44,7 +51,7 @@ const Login = ({ setIsLoggedIn }) => {
 
     return (
         <ParticlePage>
-            <section id='auth'>
+            <section id='login'>
                 <div className="container">
                     <div className="contents d-flex justify-content-center align-items-center vh-100">
                         <div className="row">
@@ -64,7 +71,7 @@ const Login = ({ setIsLoggedIn }) => {
                                                     type="email"
                                                     name="email"
                                                     placeholder="Email"
-                                                    className="form-control text-light transparent_input rounded"
+                                                    className="form-control transparent_input rounded"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required
@@ -75,14 +82,14 @@ const Login = ({ setIsLoggedIn }) => {
                                                     type="password"
                                                     name="password"
                                                     placeholder="Password"
-                                                    className="form-control text-light transparent_input rounded"
+                                                    className="form-control transparent_input rounded"
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
                                                     required
                                                 />
                                             </div>
                                             <div className="text-center">
-                                                <button type="submit" className="btn bg-two w-50 text-light form-control">Lemme In</button>
+                                                <button type="submit" className="btn bg-two w-50 form-control">Lemme In</button>
                                             </div>
                                         </form>
                                         <div className="mt-3 text-center">

@@ -2,34 +2,16 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../GolbalCss/header.css";
 
-function Header({ setIsLoggedIn }) {
-    const [iconChange, seticonChange] = useState(false);
+// Accept the user object as a prop
+function Header({ setIsLoggedIn, user }) {
     const navigate = useNavigate();
 
-    // This function can be kept if it's used for other UI elements
-    const iconChangeForSlider = () => {
-        seticonChange(!iconChange);
-    }
-
-    // This function seems related to a sidebar, can be kept as is
-    const sideBarHideShow = (event) => {
-        const sidebarToggle = document.body.querySelector('#sidebarToggle');
-        if (sidebarToggle) {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-        }
-    }
-
-    // --- CORRECTED LOGOUT LOGIC ---
     const logout = () => {
-        // 1. Remove the correct item from localStorage
+        // Remove both the token and the user object from storage
         localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
 
-        // 2. Update the application's state
         setIsLoggedIn(false);
-
-        // 3. Navigate the user to the landing/login page
         navigate('/');
     };
 
@@ -56,7 +38,7 @@ function Header({ setIsLoggedIn }) {
 
                         {/* RIGHT: Navbar Items */}
                         <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                            <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <ul className="navbar-nav ms-auto mt-2 mt-lg-0 align-items-center">
                                 <li className="nav-item active">
                                     <Link className="nav-link text-white" to="/home">Home</Link>
                                 </li>
@@ -75,6 +57,14 @@ function Header({ setIsLoggedIn }) {
                                         <Link className="dropdown-item" to="/McaTwo">MCA II</Link>
                                     </div>
                                 </li>
+                                
+                                {/* Display Welcome Message */}
+                                <li className="nav-item mx-2">
+                                    <span className="navbar-text text-white">
+                                        {user?.username || 'User'}
+                                    </span>
+                                </li>
+
                                 <li className="nav-item">
                                     <button onClick={logout} className="btn btn-outline-danger rounded bg-one fw-bold">
                                         Log-Out

@@ -1,9 +1,9 @@
 // import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
-import wall_e_modal from "../../assets/imgs/wall_e_modal.png";
+import wall_e_modal from "../assets/imgs/wall_e_modal.webp";
 
-import "../../GolbalCss/Home.css"
+import "../GolbalCss/Home.css"
 
 const Home = () => {
 

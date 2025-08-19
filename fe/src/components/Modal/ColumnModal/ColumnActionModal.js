@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"; // Import useState and useEffect
-import "./BrowserRouter.css"; // ensure styles are applied, or create a specific CSS for this modal
+import "./ColumnActionModal.css"; // ensure styles are applied, or create a specific CSS for this modal
 
 const ColumnActionModal = ({
   column,
