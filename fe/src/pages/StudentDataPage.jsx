@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { exportToExcel, exportFilteredToExcel } from "../utils/ExportToExcel";
 import { getHeaders, addHeader, updateHeader, deleteHeader } from "../services/apiService";
 
@@ -21,8 +21,6 @@ const StudentDataPage = ({ title, api }) => {
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
   const [selectedColumnForAction, setSelectedColumnForAction] = useState(null);
   const [renameInputValue, setRenameInputValue] = useState("");
-  const longPressTimer = useRef(null);
-  const LONG_PRESS_DURATION = 700;
   const [titleToIdMap, setTitleToIdMap] = useState(new Map());
   const [idToTitleMap, setIdToTitleMap] = useState(new Map());
 
@@ -52,10 +50,6 @@ const StudentDataPage = ({ title, api }) => {
     };
     fetchInitialData();
   }, [api]);
-
-  useEffect(() => {
-    return () => clearTimeout(longPressTimer.current);
-  }, []);
 
   const displayedStudents = students.filter((student) => {
     if (!searchTerm) return true;
@@ -181,11 +175,13 @@ const StudentDataPage = ({ title, api }) => {
     }
   };
 
-  // --- COLUMN MODAL AND LONG PRESS HANDLERS ---
+  // --- COLUMN MODAL LOGIC ---
   const handleOpenColumnModal = (column) => {
-    setSelectedColumnForAction(column);
-    setRenameInputValue(column.title);
-    setIsColumnModalOpen(true);
+    if (column.title !== "ID") {
+      setSelectedColumnForAction(column);
+      setRenameInputValue(column.title);
+      setIsColumnModalOpen(true);
+    }
   };
 
   const handleCloseColumnModal = () => {
@@ -249,16 +245,6 @@ const StudentDataPage = ({ title, api }) => {
     }
   };
 
-  const handlePressStart = (column) => {
-    clearTimeout(longPressTimer.current);
-    longPressTimer.current = setTimeout(() => {
-      if (column.title !== "ID") handleOpenColumnModal(column);
-    }, LONG_PRESS_DURATION);
-  };
-
-  const handlePressEnd = () => clearTimeout(longPressTimer.current);
-  const handlePressLeave = () => clearTimeout(longPressTimer.current);
-
   return (
     <section>
       <div className="container mt-5">
@@ -289,10 +275,8 @@ const StudentDataPage = ({ title, api }) => {
             editMode={editMode}
             editedCell={editedCell}
             onCellChange={handleCellChange}
-            onHeaderPressStart={handlePressStart}
-            onHeaderPressEnd={handlePressEnd}
-            onHeaderPressLeave={handlePressLeave}
-            onRowDoubleClick={openStudentDeleteModal} // Pass the handler to the table
+            onHeaderDoubleClick={handleOpenColumnModal} // Pass the handler to the table
+            onRowDoubleClick={openStudentDeleteModal}
         />
       </div>
       {isColumnModalOpen && selectedColumnForAction && (

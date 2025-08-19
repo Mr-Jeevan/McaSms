@@ -6,10 +6,8 @@ const StudentTable = ({
   editMode,
   editedCell,
   onCellChange,
-  onHeaderPressStart,
-  onHeaderPressEnd,
-  onHeaderPressLeave,
-  onRowDoubleClick, // New prop for handling double click
+  onHeaderDoubleClick, // Changed from long press handlers
+  onRowDoubleClick,
 }) => {
   return (
     <div className="overflow-auto table-responsive glass_card p-2 pt-2 rounded">
@@ -18,17 +16,13 @@ const StudentTable = ({
       </div>
       <div className="overflow-hidden">
         <table className="table borderless-row table-light mb-0">
-          <thead className="bg-mid" style={{ color: "white" }}>
-            <tr className="bg-mid">
+          <thead className="bg- bg-two" style={{ color: "white" }}>
+            <tr className="bg- bg-two">
               {columns.map((col, idx) => (
                 <th
                   key={col._id}
                   className={idx === 0 ? "sticky-col" : idx === 1 ? "sticky-col-2" : ""}
-                  onMouseDown={() => onHeaderPressStart(col)}
-                  onMouseUp={onHeaderPressEnd}
-                  onMouseLeave={onHeaderPressLeave}
-                  onTouchStart={() => onHeaderPressStart(col)}
-                  onTouchEnd={onHeaderPressEnd}
+                  onDoubleClick={() => onHeaderDoubleClick(col)} // Replaced long press with double click
                   style={{ cursor: col.title === "ID" ? "default" : "pointer" }}
                 >
                   {col.title}
