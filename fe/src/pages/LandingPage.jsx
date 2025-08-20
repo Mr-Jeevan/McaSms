@@ -36,6 +36,30 @@ while (isDeveloper) {
     repeat();
 }`;
 
+const [animatedText, setAnimatedText] = useState('');
+
+useEffect(() => {
+        let timeout;
+
+        const animationLogic = (index = 0) => {
+            if (index < codeSnippet.length) {
+                // Update the string with the next character
+                setAnimatedText((prev) => prev + codeSnippet[index]);
+                timeout = setTimeout(() => animationLogic(index + 1), 50);
+            } else {
+                // Logic to repeat the animation
+                timeout = setTimeout(() => {
+                    setAnimatedText(''); // Reset the string
+                    animationLogic(0);   // Restart logic
+                }, 4000);
+            }
+        };
+
+        animationLogic(); // Start the logic
+
+        return () => clearTimeout(timeout); // Cleanup
+    }, [Infinity]); 
+
     useEffect(() => {
         const track = trackRef.current;
         let x = 0;
@@ -108,16 +132,16 @@ while (isDeveloper) {
                 </div>
             </div>
             {/* coloring the syntax */}
-            <SyntaxHighlighter language="javascript" style={synthwave84}>
-                {codeSnippet}
-            </SyntaxHighlighter>
             <div className="advice">
                 <div className="advice-content d-flex justify-content-center">
                     <div className="code-container">
                         <h2>A Dev Loop</h2>
+            <SyntaxHighlighter language="javascript" style={synthwave84}>
+                {animatedText}
+            </SyntaxHighlighter>
                         {/* <TypeAnimation
                             sequence={[
-                                codeSnippet,
+                                coloredSyntax,
                                 4000,
                                 '',
                             ]}
@@ -140,37 +164,6 @@ while (isDeveloper) {
                     </div>
                 </div>
             </div>
-            <div style={{ position: 'relative', fontFamily: 'monospace' }}>
-
-                {/* 1. The Real, Colored Code (Bottom Layer) */}
-                {/* <SyntaxHighlighter language="javascript" style={synthwave84}>
-        {codeString}
-      </SyntaxHighlighter>
-
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-        <TypeAnimation
-          sequence={[
-            codeString, // Type the code
-            3000,       // Wait 3s
-            '',         // Delete it
-          ]}
-          wrapper="pre"
-          speed={50}
-          repeat={Infinity}
-          cursor={true}
-          // Style the typewriter to match the background of the highlighter
-          style={{
-            margin: 0,
-            display: 'block',
-            backgroundColor: '#1E1E1E', // Match the vscDarkPlus background
-            color: 'transparent', // Make the actual typed text invisible
-            caretColor: 'white' // Make the cursor visible
-          }}
-        />
-      </div> */}
-
-            </div>
-
             <hr />
             <footer>
                 <div className="content">
