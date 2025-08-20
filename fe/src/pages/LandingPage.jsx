@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import '../GolbalCss/LandingPage.css'
 import "@fontsource/k2d";
-
+import { TypeAnimation } from 'react-type-animation';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { synthwave84 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 // import "./ImageSlider.scss";
 
@@ -21,8 +23,12 @@ const LandingPage = () => {
 
     const trackRef = useRef(null);
 
+    const codeString = `function helloWorld() {
+  console.log('Hello, Coder!');
+}`;
+
     const codeSnippet = `
-while (alive) {
+while (isDeveloper) {
     eat();
     sleep();
     code();
@@ -101,12 +107,26 @@ while (alive) {
                     </Link>
                 </div>
             </div>
-
+            {/* coloring the syntax */}
+            <SyntaxHighlighter language="javascript" style={synthwave84}>
+                {codeSnippet}
+            </SyntaxHighlighter>
             <div className="advice">
                 <div className="advice-content d-flex justify-content-center">
                     <div className="code-container">
                         <h2>A Dev Loop</h2>
-                        <pre>
+                        {/* <TypeAnimation
+                            sequence={[
+                                codeSnippet,
+                                4000,
+                                '',
+                            ]}
+                            wrapper='pre'
+                            speed={50}
+                            repeat={Infinity}
+
+                        /> */}
+                        {/* <pre>
                             <code>
                                 <span className="keyword">while</span> (true) {'{'}{'\n'}
                                 &nbsp;&nbsp;<span className="function-name">eat</span>();{'\n'}
@@ -116,10 +136,41 @@ while (alive) {
                                 &nbsp;&nbsp;<span className="function-name">repeat</span>();{'\n'}
                                 {'}'}
                             </code>
-                        </pre>
+                        </pre> */}
                     </div>
                 </div>
             </div>
+            <div style={{ position: 'relative', fontFamily: 'monospace' }}>
+
+                {/* 1. The Real, Colored Code (Bottom Layer) */}
+                {/* <SyntaxHighlighter language="javascript" style={synthwave84}>
+        {codeString}
+      </SyntaxHighlighter>
+
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+        <TypeAnimation
+          sequence={[
+            codeString, // Type the code
+            3000,       // Wait 3s
+            '',         // Delete it
+          ]}
+          wrapper="pre"
+          speed={50}
+          repeat={Infinity}
+          cursor={true}
+          // Style the typewriter to match the background of the highlighter
+          style={{
+            margin: 0,
+            display: 'block',
+            backgroundColor: '#1E1E1E', // Match the vscDarkPlus background
+            color: 'transparent', // Make the actual typed text invisible
+            caretColor: 'white' // Make the cursor visible
+          }}
+        />
+      </div> */}
+
+            </div>
+
             <hr />
             <footer>
                 <div className="content">
