@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import '../../GolbalCss/LandingPage.css'
+import '../GolbalCss/LandingPage.css'
 import "@fontsource/k2d";
 
 
 // import "./ImageSlider.scss";
 
-import banner_1 from "../../assets/imgs/landingpage/banner_1.webp"
-import banner_2 from "../../assets/imgs/landingpage/banner_2.webp"
-import banner_3 from "../../assets/imgs/landingpage/banner_3.webp"
-import banner_4 from "../../assets/imgs/landingpage/banner_4.webp"
+import banner_1 from "../assets/imgs/landingpage/banner_1.webp"
+import banner_2 from "../assets/imgs/landingpage/banner_2.webp"
+import banner_3 from "../assets/imgs/landingpage/banner_3.webp"
+import banner_4 from "../assets/imgs/landingpage/banner_4.webp"
 
 const images = [
     banner_2,
