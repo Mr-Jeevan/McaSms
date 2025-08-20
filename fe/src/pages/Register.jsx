@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { registerUser } from '../../services/apiService'; // Adjust path
-import "../../GolbalCss/index.css";
-import "../../GolbalCss/auth.css";
+import { registerUser } from '../services/apiService'; // Adjust path
+import "../GlobalCss/index.css";
+import "../GlobalCss/auth.css";
 
-import ParticlePage from '../../components/ParticlesBackground/ParticlePage';
+import ParticlePage from '../components/ParticlesBackground/ParticlePage';
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -83,14 +83,14 @@ const Register = () => {
                                                     type="password"
                                                     name="password"
                                                     placeholder="Password"
-                                                    className="form-control transparent_input rounded"
+                                                    className="form-control text-light transparent_input rounded"
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
                                                     required
                                                 />
                                             </div>
                                             <div className="text-center">
-                                                <button type="submit" className="btn bg-two w-50 form-control">Register</button>
+                                                <button type="submit" className="btn bg-two text-light w-50 form-control">Register</button>
                                             </div>
                                         </form>
                                         <div className="mt-3 text-center">

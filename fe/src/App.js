@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
-import Register from './pages/Register/Register';
-import Login from './pages/Login/Login'
+import Register from './pages/Register';
+import Login from './pages/Login'
 import Header from '../src/layout/header';
 import Home from './pages/Home';
 import McaTwo from '../src/pages/Mca_2/McaTwo';

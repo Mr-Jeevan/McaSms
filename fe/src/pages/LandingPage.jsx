@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import '../GolbalCss/LandingPage.css'
+import '../GlobalCss/LandingPage.css'
 import "@fontsource/k2d";
-import { TypeAnimation } from 'react-type-animation';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { synthwave84 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -24,8 +23,8 @@ const LandingPage = () => {
     const trackRef = useRef(null);
 
 
-    const codeSnippet = `
-while (isDeveloper) {
+    const codeSnippet =
+        `while (isDeveloper) {
     eat();
     sleep();
     code();
@@ -33,7 +32,7 @@ while (isDeveloper) {
 }`;
 
     const [displayedCode, setDisplayedCode] = useState('');
-useEffect(() => {
+    useEffect(() => {
         let timeout;
 
         // Function to handle the deleting effect
@@ -70,7 +69,7 @@ useEffect(() => {
         // Cleanup function to clear the timeout when the component unmounts
         return () => clearTimeout(timeout);
     }, []); // CORRECTED: Use an empty array for a run-once effect.
-    
+
     // slider
     useEffect(() => {
         const track = trackRef.current;
@@ -148,9 +147,9 @@ useEffect(() => {
                 <div className="advice-content d-flex justify-content-center">
                     <div className="code-container">
                         <h2>A Dev Loop</h2>
-            <SyntaxHighlighter language="javascript" style={synthwave84}>
-                {displayedCode}
-            </SyntaxHighlighter>
+                        <SyntaxHighlighter language="javascript" style={synthwave84}>
+                            {displayedCode}
+                        </SyntaxHighlighter>
                         {/* <TypeAnimation
                             sequence={[
                                 coloredSyntax,
