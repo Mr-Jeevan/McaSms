@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import '../GlobalCss/index.css'
 import '../GlobalCss/LandingPage.css'
 import "@fontsource/k2d";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -97,7 +98,7 @@ const LandingPage = () => {
                         <span className="navbar-brand text-light">SMS</span>
                         <form className="d-flex" >
                             <Link to="/login">
-                                <button className="btn px-5 rounded-2" type="submit">LOGIN</button>
+                                <button className="btn outlineBtn hoverBtn px-5 rounded-2" type="submit">LOGIN</button>
                             </Link>
                         </form>
                     </div>
@@ -135,7 +136,7 @@ const LandingPage = () => {
                 </div>
             </div>
 
-            <div className="login_btn my-5 py-3">
+            <div className="glowBtn my-5 py-3">
                 <div className="d-flex justify-content-center ">
                     <Link to="/register">
                         <button className='btn px-4'>REGISTER</button>

@@ -65,17 +65,75 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.activeBtnFour:active,
+.activeBtnFour:focus {
+    background: var(--clr-four);
+}
+
+.activeInputMid:active,
+.activeInputMid:focus {
+    background: var(--clr-mid);
+    /* color: white; */
+    border: none;
+    outline: none;
+}
+
+.outlineBtn {
+    border: 2px solid var(--clr-two);
+    color: #9B7EBD;
+    transition: .2s ease-in-out;
+}
+
+.hoverBtn:hover,
+.hoverBtn:visited,
+.hoverBtn:active {
+    background-color: var(--clr-two);
+    color: #fff;
+}
+
 .transparent_input {
     background-color: transparent;
     border: 1px solid var(--clr-two);
     color: #fff;
 }
 
+/* Hide default checkbox */
+input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Checked state */
+input[type="checkbox"]:checked {
+    background-color: var(--clr-one);
+    /* Green */
+    border-color: none;
+    box-shadow: none;
+    outline: none;
+}
+
+input[type="checkbox"]:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.darkInput:focus {
+    outline: none;
+    box-shadow: none;
+    border: 1px solid #af24ff;
+    background: #000000;
+}
+
 #tsparticles {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }

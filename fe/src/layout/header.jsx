@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../GolbalCss/header.css";
+import "../GlobalCss/header.css";
 
 // Accept the user object as a prop
 function Header({ setIsLoggedIn, user }) {

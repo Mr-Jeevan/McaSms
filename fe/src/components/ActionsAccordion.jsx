@@ -12,10 +12,10 @@ const ActionsAccordion = ({
 }) => {
   return (
     <div className="accordion accordion-flush shadow-sm rounded bg-light" id="actionsAccordion">
-      <div className="accordion-item rounded">
+      <div className="accordion-item rounded shadow-none ">
         <h2 className="accordion-header">
           <button
-            className="accordion-button collapsed bg-four rounded"
+            className="accordion-button shadow-none activeBtnFour collapsed bg-four rounded"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#collapseActions"
@@ -31,12 +31,12 @@ const ActionsAccordion = ({
                 <div className="input-group w-50">
                   <input
                     type="text"
-                    className="form-control bg-mid txt-gray"
+                    className="form-control bg-mid activeInputMid shadow-none txt-gray"
                     placeholder="Enter new column name"
                     value={newColumn}
                     onChange={onNewColumnChange}
                   />
-                  <button className="btn bg-one text-white" onClick={onAddColumn}>
+                  <button className="btn bg-one hoverBtn text-white" onClick={onAddColumn}>
                     Add Column
                   </button>
                 </div>
@@ -45,10 +45,10 @@ const ActionsAccordion = ({
               {/* Export Buttons */}
               <div className="col-md-6 mb-3">
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <button className="btn bg-one text-white" onClick={onExportFiltered}>
+                  <button className="btn hoverBtn bg-one text-white" onClick={onExportFiltered}>
                     Export Selected
                   </button>
-                  <button className="btn bg-mid" onClick={onExportAll}>
+                  <button className="btn hoverBtn bg-mid" onClick={onExportAll}>
                     Export All
                   </button>
                 </div>
@@ -69,7 +69,7 @@ const ActionsAccordion = ({
                             <div className="form-check d-flex align-items-center gap-2">
                               <input
                                 type="checkbox"
-                                className="form-check-input"
+                                className="form-check-input shadow-none darkInput"
                                 id={`check-${col._id}`}
                                 checked={selectedColumns.includes(col.title)}
                                 onChange={() => onCheckboxChange(col.title)}
