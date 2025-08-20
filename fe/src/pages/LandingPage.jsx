@@ -23,43 +23,55 @@ const LandingPage = () => {
 
     const trackRef = useRef(null);
 
-    const codeString = `function helloWorld() {
-  console.log('Hello, Coder!');
-}`;
 
     const codeSnippet = `
 while (isDeveloper) {
     eat();
     sleep();
     code();
-    design();
     repeat();
 }`;
 
-const [animatedText, setAnimatedText] = useState('');
-
+    const [displayedCode, setDisplayedCode] = useState('');
 useEffect(() => {
         let timeout;
 
-        const animationLogic = (index = 0) => {
+        // Function to handle the deleting effect
+        const deleteText = () => {
+            // By placing the logic inside the setter, `prev` is always the latest state.
+            setDisplayedCode(prev => {
+                if (prev.length > 0) {
+                    // If there's text, remove one character and schedule the next deletion.
+                    timeout = setTimeout(deleteText, 35);
+                    return prev.slice(0, -1);
+                } else {
+                    // If the text is empty, schedule the next typing animation.
+                    timeout = setTimeout(() => typeText(0), 1000);
+                    return ''; // Return the empty string to finalize the state.
+                }
+            });
+        };
+
+        // Function to handle the typing effect (this function was already correct)
+        const typeText = (index = 0) => {
             if (index < codeSnippet.length) {
-                // Update the string with the next character
-                setAnimatedText((prev) => prev + codeSnippet[index]);
-                timeout = setTimeout(() => animationLogic(index + 1), 50);
+                // Add the next character
+                setDisplayedCode(prev => prev + codeSnippet[index]);
+                timeout = setTimeout(() => typeText(index + 1), 50);
             } else {
-                // Logic to repeat the animation
-                timeout = setTimeout(() => {
-                    setAnimatedText(''); // Reset the string
-                    animationLogic(0);   // Restart logic
-                }, 4000);
+                // After typing, pause and then start deleting
+                timeout = setTimeout(deleteText, 2000);
             }
         };
 
-        animationLogic(); // Start the logic
+        // Start the initial animation
+        typeText();
 
-        return () => clearTimeout(timeout); // Cleanup
-    }, [Infinity]); 
-
+        // Cleanup function to clear the timeout when the component unmounts
+        return () => clearTimeout(timeout);
+    }, []); // CORRECTED: Use an empty array for a run-once effect.
+    
+    // slider
     useEffect(() => {
         const track = trackRef.current;
         let x = 0;
@@ -137,7 +149,7 @@ useEffect(() => {
                     <div className="code-container">
                         <h2>A Dev Loop</h2>
             <SyntaxHighlighter language="javascript" style={synthwave84}>
-                {animatedText}
+                {displayedCode}
             </SyntaxHighlighter>
                         {/* <TypeAnimation
                             sequence={[
