@@ -61,7 +61,7 @@ const Register = () => {
                                                     type="text"
                                                     name="username"
                                                     placeholder="Username"
-                                                    className="form-control text-light transparent_input rounded"
+                                                    className="form-control text-light whitePlaceholder transparent_input rounded"
                                                     value={username}
                                                     onChange={(e) => setUsername(e.target.value)}
                                                     required
@@ -72,7 +72,7 @@ const Register = () => {
                                                     type="email"
                                                     name="email"
                                                     placeholder="Email"
-                                                    className="form-control text-light transparent_input rounded"
+                                                    className="form-control text-light whitePlaceholder transparent_input rounded"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required
@@ -83,7 +83,7 @@ const Register = () => {
                                                     type="password"
                                                     name="password"
                                                     placeholder="Password"
-                                                    className="form-control text-light transparent_input rounded"
+                                                    className="form-control text-light whitePlaceholder transparent_input rounded"
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
                                                     required

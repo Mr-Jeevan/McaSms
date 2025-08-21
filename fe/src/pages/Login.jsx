@@ -71,7 +71,7 @@ const Login = ({ setIsLoggedIn, setCurrentUser }) => {
                                                     type="email"
                                                     name="email"
                                                     placeholder="Email"
-                                                    className="form-control text-light transparent_input rounded"
+                                                    className="form-control darkInput text-light whitePlaceholder transparent_input rounded"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
                                                     required
@@ -82,7 +82,7 @@ const Login = ({ setIsLoggedIn, setCurrentUser }) => {
                                                     type="password"
                                                     name="password"
                                                     placeholder="Password"
-                                                    className="form-control darkInput text-light transparent_input rounded"
+                                                    className="form-control darkInput text-light whitePlaceholder transparent_input rounded"
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
                                                     required

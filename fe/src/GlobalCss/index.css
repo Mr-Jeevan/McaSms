@@ -129,6 +129,10 @@ input[type="checkbox"]:focus-visible {
     background: #000000;
 }
 
+.whitePlaceholder::placeholder {
+    color: #ffffff;
+}
+
 #tsparticles {
     position: fixed !important;
     top: 0;

@@ -19,15 +19,12 @@ const McaOne = () => {
 
   return (
     <>
-
       <StudentDataPage
         title="MCA I Management System"
         api={mcaOneApi}
       />
-      <div>
-        <Info />
-
-      </div>
+      
+      <Info />
     </>
   );
 };

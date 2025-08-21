@@ -17,7 +17,7 @@ const ControlBar = ({
         <div className="input-group">
           <input
             type="text"
-            className="search_input text-light shadow-none form-control border-0 glass_card text-dark"
+            className="search_input text-light darkInput whitePlaceholder shadow-none form-control border-0 glass_card "
             placeholder="Search..."
             value={searchTerm}
             onChange={onSearchChange}

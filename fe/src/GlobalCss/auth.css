@@ -34,9 +34,6 @@
         background: #000000;
     }
 
-    input::placeholder{
-        color: #ffffff;
-    }
     .btn:focus,
     .btn:hover {
         background: var(--clr-two-dark);
