@@ -1,4 +1,5 @@
 import React from 'react';
+import Info from '../../components/Info';
 import StudentDataPage from '../StudentDataPage'; // Adjust path if necessary
 import {
   getMcaTwoStudents,
@@ -17,10 +18,14 @@ const McaTwo = () => {
   };
 
   return (
-    <StudentDataPage
-      title="MCA II Management System"
-      api={mcaTwoApi}
-    />
+    <>
+      <StudentDataPage
+        title="MCA II Management System"
+        api={mcaTwoApi}
+      />
+
+      <Info />
+    </>
   );
 };
 
