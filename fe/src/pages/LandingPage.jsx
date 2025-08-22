@@ -32,44 +32,44 @@ const LandingPage = () => {
     repeat();
 }`;
 
-    const [displayedCode, setDisplayedCode] = useState('');
-    useEffect(() => {
-        let timeout;
+    // const [displayedCode, setDisplayedCode] = useState('');
+    // useEffect(() => {
+    //     let timeout;
 
-        // Function to handle the deleting effect
-        const deleteText = () => {
-            // By placing the logic inside the setter, `prev` is always the latest state.
-            setDisplayedCode(prev => {
-                if (prev.length > 0) {
-                    // If there's text, remove one character and schedule the next deletion.
-                    timeout = setTimeout(deleteText, 35);
-                    return prev.slice(0, -1);
-                } else {
-                    // If the text is empty, schedule the next typing animation.
-                    timeout = setTimeout(() => typeText(0), 1000);
-                    return ''; // Return the empty string to finalize the state.
-                }
-            });
-        };
+    //     // Function to handle the deleting effect
+    //     const deleteText = () => {
+    //         // By placing the logic inside the setter, `prev` is always the latest state.
+    //         setDisplayedCode(prev => {
+    //             if (prev.length > 0) {
+    //                 // If there's text, remove one character and schedule the next deletion.
+    //                 timeout = setTimeout(deleteText, 35);
+    //                 return prev.slice(0, -1);
+    //             } else {
+    //                 // If the text is empty, schedule the next typing animation.
+    //                 timeout = setTimeout(() => typeText(0), 1000);
+    //                 return ''; // Return the empty string to finalize the state.
+    //             }
+    //         });
+    //     };
 
-        // Function to handle the typing effect (this function was already correct)
-        const typeText = (index = 0) => {
-            if (index < codeSnippet.length) {
-                // Add the next character
-                setDisplayedCode(prev => prev + codeSnippet[index]);
-                timeout = setTimeout(() => typeText(index + 1), 50);
-            } else {
-                // After typing, pause and then start deleting
-                timeout = setTimeout(deleteText, 2000);
-            }
-        };
+    //     // Function to handle the typing effect (this function was already correct)
+    //     const typeText = (index = 0) => {
+    //         if (index < codeSnippet.length) {
+    //             // Add the next character
+    //             setDisplayedCode(prev => prev + codeSnippet[index]);
+    //             timeout = setTimeout(() => typeText(index + 1), 50);
+    //         } else {
+    //             // After typing, pause and then start deleting
+    //             timeout = setTimeout(deleteText, 2000);
+    //         }
+    //     };
 
-        // Start the initial animation
-        typeText();
+    //     // Start the initial animation
+    //     typeText();
 
-        // Cleanup function to clear the timeout when the component unmounts
-        return () => clearTimeout(timeout);
-    }, []); // CORRECTED: Use an empty array for a run-once effect.
+    //     // Cleanup function to clear the timeout when the component unmounts
+    //     return () => clearTimeout(timeout);
+    // }, []); // CORRECTED: Use an empty array for a run-once effect.
 
     // slider
     useEffect(() => {
@@ -149,30 +149,8 @@ const LandingPage = () => {
                     <div className="code-container">
                         <h2>A Dev Loop</h2>
                         <SyntaxHighlighter language="javascript" style={synthwave84}>
-                            {displayedCode}
+                            {codeSnippet}
                         </SyntaxHighlighter>
-                        {/* <TypeAnimation
-                            sequence={[
-                                coloredSyntax,
-                                4000,
-                                '',
-                            ]}
-                            wrapper='pre'
-                            speed={50}
-                            repeat={Infinity}
-
-                        /> */}
-                        {/* <pre>
-                            <code>
-                                <span className="keyword">while</span> (true) {'{'}{'\n'}
-                                &nbsp;&nbsp;<span className="function-name">eat</span>();{'\n'}
-                                &nbsp;&nbsp;<span className="function-name">sleep</span>();{'\n'}
-                                &nbsp;&nbsp;<span className="special-function">code</span>();{'\n'}
-                                &nbsp;&nbsp;<span className="another-special-function">design</span>();{'\n'}
-                                &nbsp;&nbsp;<span className="function-name">repeat</span>();{'\n'}
-                                {'}'}
-                            </code>
-                        </pre> */}
                     </div>
                 </div>
             </div>
