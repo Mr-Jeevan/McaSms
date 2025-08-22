@@ -50,8 +50,8 @@ const Home = () => {
                             {/* hero image */}
                             <div className="col-lg-6 col-sm-12 col-md-12 order-1 order-lg-2 my-2">
                                 <div className="hero-image d-flex justify-content-center align-items-center h-100 w-100">
-                                    <img src={wall_e_modal} alt="nallaruku-la" className='img-fluid w-50 ' id="hero_img" />
-                                    <div className="glow">u r gay</div>
+                                    <img style={{ cursor: "move" }} src={wall_e_modal} alt="nallaruku-la" className='img-fluid w-50 ' id="hero_img" />
+                                    <div className="glow">urnet slo</div>
                                 </div>
                             </div>
                         </div>
