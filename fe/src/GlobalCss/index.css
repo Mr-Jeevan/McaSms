@@ -100,9 +100,9 @@
 /* Hide default checkbox */
 input[type="checkbox"] {
     appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #555;
+    /* width: 20px;
+    height: 20px; */
+    /* border: 2px solid #555; */
     border-radius: 4px;
     background-color: white;
     cursor: pointer;
@@ -111,7 +111,6 @@ input[type="checkbox"] {
 /* Checked state */
 input[type="checkbox"]:checked {
     background-color: var(--clr-one);
-    /* Green */
     border-color: none;
     box-shadow: none;
     outline: none;

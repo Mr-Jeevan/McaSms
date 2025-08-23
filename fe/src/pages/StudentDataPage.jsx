@@ -3,7 +3,7 @@ import { exportToExcel, exportFilteredToExcel } from "../utils/ExportToExcel";
 import { getHeaders, addHeader, updateHeader, deleteHeader } from "../services/apiService";
 
 import ColumnActionModal from "../components/Modal/ColumnModal/ColumnActionModal";
-import StudentActionModal from "../components/Modal/StudentModal/StudentActionModal"; // Import the student modal
+import StudentActionModal from "../components/Modal/StudentModal/StudentActionModal";
 import ActionsAccordion from "../components/ActionsAccordion";
 import ControlBar from "../components/ControlBar";
 import StudentTable from "../components/StudentTable";
@@ -156,6 +156,9 @@ const StudentDataPage = ({ title, api }) => {
 
   // --- STUDENT DELETE LOGIC ---
   const openStudentDeleteModal = (student) => {
+    // FIX: Do not open the modal if edit mode is active
+    if (editMode) return;
+
     setStudentToDelete(student);
     setIsStudentModalOpen(true);
   };
@@ -177,6 +180,9 @@ const StudentDataPage = ({ title, api }) => {
 
   // --- COLUMN MODAL LOGIC ---
   const handleOpenColumnModal = (column) => {
+    // Also prevent column modal in edit mode
+    if (editMode) return;
+    
     if (column.title !== "ID") {
       setSelectedColumnForAction(column);
       setRenameInputValue(column.title);
@@ -275,7 +281,7 @@ const StudentDataPage = ({ title, api }) => {
             editMode={editMode}
             editedCell={editedCell}
             onCellChange={handleCellChange}
-            onHeaderDoubleClick={handleOpenColumnModal} // Pass the handler to the table
+            onHeaderDoubleClick={handleOpenColumnModal}
             onRowDoubleClick={openStudentDeleteModal}
         />
       </div>
