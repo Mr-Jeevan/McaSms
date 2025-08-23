@@ -23,28 +23,26 @@ const Home = () => {
 
                                 <div className="card_container_mca1 ms-5">
 
-                                    <Link className="nav-link" to="/McaOne">
-
-                                        <div className="card my-3 c_1 wallet">
+                                    <div className="card my-3 c_1 wallet">
+                                        <Link className="nav-link" to="/McaOne">
                                             <div className="overlay"></div>
                                             <div className="circle">
                                                 <div className='dept fw-bold z-1'>MCA I</div>
                                             </div>
-                                        </div>
-                                    </Link>
+                                        </Link>
+                                    </div>
 
                                 </div>
 
                                 <div className="card_container_mca2 me-5">
-                                    <Link className="nav-link" to="/McaTwo">
-
-                                        <div className="card my-3 ms-auto c_2 wallet">
+                                    <div className="card my-3 ms-auto c_2 wallet">
+                                        <Link className="nav-link" to="/McaTwo">
                                             <div className="overlay"></div>
                                             <div className="circle">
                                                 <div className='dept fw-bold z-1 '>MCA 2</div>
                                             </div>
-                                        </div>
-                                    </Link>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                             {/* hero image */}
