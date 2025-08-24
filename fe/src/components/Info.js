@@ -20,7 +20,7 @@ const Info = () => {
     return (
         <>
             {/* Info Icon Button */}
-            <div className="position-fixed bottom-0 end-0"> {/* Corrected: top-50 */}
+            <div className="position-fixed bottom-3 end-0"> {/* Corrected: top-50 */}
                 <div className="info-container d-flex justify-content-end m-3 align-items-center">
                     {/* The button now uses an onClick event to update state */}
                     <img style={{ cursor: 'pointer', values: 'auto default pointer wait text move help not-allowed' }} onClick={handleShowModal} width="40px" src={info} alt="info" title="Information" />

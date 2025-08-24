@@ -21,7 +21,7 @@
 }
 
 .bg-mid {
-    background-color: #E1A1FF;
+    background-color: #E1A1FF ;
 }
 
 .bg-four {
@@ -130,6 +130,36 @@ input[type="checkbox"]:focus-visible {
 
 .whitePlaceholder::placeholder {
     color: #ffffff;
+}
+
+/* table css */
+
+/* The container that allows the table to scroll horizontally */
+.table-responsive {
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Styles for the FIRST sticky column */
+.sticky-col {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  left: 0;
+  z-index: 2; /* Higher z-index to stay on top */
+}
+
+/* Styles for the SECOND sticky column */
+.sticky-col-2 {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  /* The 'left' value must be the width of the first column. Adjust as needed. */
+  left: 80px; 
+  z-index: 2;
+}
+
+/* Ensure the sticky header cells also have a background */
+ thead tr  {
+    background-color: #e9ecef; 
 }
 
 #tsparticles {

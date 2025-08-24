@@ -1,10 +1,11 @@
 import React from 'react'
+import "../GlobalCss/footer.css"
 
 const Footer = () => {
     return (
-        <section>
+        <section className='footer'>
             <footer className="footer mt-auto py-3">
-                <div className="container">
+                <div className="position-fixed bottom-0 start-0 end-0 mx-3">
                     <div className="d-flex justify-content-between align-items-center">
                         <h2>SMS</h2>
                         <p className="text-muted mb-0">Copyright @2025</p>

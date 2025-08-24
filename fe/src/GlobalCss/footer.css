@@ -1,0 +1,36 @@
+#footer {
+    background: #fc64ff !important;
+    color: white;
+    padding: 1rem 0;
+
+
+
+    footer {
+        background-color: #37517e;
+        color: white;
+        height: 70px;
+
+    }
+
+    .footer-a {
+        text-decoration: none;
+        color: #00a0eb;
+        transition: .5s ease-in-out;
+    }
+
+    .footer-a:hover {
+        text-decoration: none;
+        color: yellow;
+    }
+
+    .fa-heart {
+        opacity: 0;
+        transition: 1s ease-in-out;
+    }
+
+    .footer-a:hover i {
+        opacity: 1;
+
+
+    }
+}
